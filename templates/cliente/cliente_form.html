@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if is_editing %}Editar Cliente{% else %}Nuevo Cliente{% endif %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-100 text-gray-900">
+    
+    <div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-6">
+            {% if is_editing %}Editar Cliente{% else %}Registrar Nuevo Cliente{% endif %}
+        </h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-4">
+                    <label class="block font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            {% if error %}
+                <p class="text-red-500 font-semibold mb-4">{{ error }}</p>
+            {% endif %}
+            
+            <div class="flex justify-between mt-6">
+                <a href="{% url 'cliente_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                    Cancelar
+                </a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    {% if is_editing %}Actualizar{% else %}Guardar{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+    
+</body>
+</html>

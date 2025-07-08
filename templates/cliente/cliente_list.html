@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .btn-nuevo {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .btn-nuevo:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .acciones a {
+            margin-right: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .acciones .editar {
+            color: #007bff;
+        }
+        .acciones .eliminar {
+            color: #dc3545;
+        }
+        .debug {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 5px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Listado de Clientes</h1>
+
+    <a class="btn-nuevo" href="{% url 'cliente_create' %}">➕ Nuevo Cliente</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Fecha Nacimiento</th>
+                <th>Género</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in clientes %}
+            <tr>
+                <td>{{ c.id_cliente }}</td>
+                <td>{{ c.nombre }}</td>
+                <td>{{ c.dni }}</td>
+                <td>{{ c.telefono }}</td>
+                <td>{{ c.email }}</td>
+                <td>{{ c.fecha_nacimiento|date:"F j, Y" }}</td>
+                <td>{{ c.genero }}</td>
+                <td class="acciones">
+                    <!-- OPCIÓN 1: Con parámetro nombrado (RECOMENDADO) -->
+                    <a class="editar" href="{% url 'cliente_update' id_cliente=c.id_cliente %}">✏️ Editar</a>
+                    <a class="eliminar" href="{% url 'cliente_delete' id_cliente=c.id_cliente %}">🗑️ Eliminar</a>
+                    
+                    <!-- OPCIÓN 2: Con parámetro posicional (ALTERNATIVA) -->
+                    <!-- <a class="editar" href="{% url 'cliente_update' c.id_cliente %}">✏️ Editar</a> -->
+                    <!-- <a class="eliminar" href="{% url 'cliente_delete' c.id_cliente %}">🗑️ Eliminar</a> -->
+                    
+                    <!-- DEBUG: Mostrar los valores para verificar -->
+                    <div class="debug">
+                        ID: {{ c.id_cliente }} | 
+                        URL Editar: {% url 'cliente_update' id_cliente=c.id_cliente %} | 
+                        URL Eliminar: {% url 'cliente_delete' id_cliente=c.id_cliente %}
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" style="text-align:center;">No hay clientes registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

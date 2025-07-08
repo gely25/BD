@@ -1,0 +1,91 @@
+<h1>{% if is_editing %}Editar inscripción{% else %}Registrar nueva inscripción{% endif %}</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <!-- Cliente -->
+    <label for="id_cliente">Cliente:</label>
+    {{ form.id_cliente }}
+
+    <!-- Tipo de membresía -->
+    <label for="tipoSelect">Tipo de membresía:</label>
+    <select id="tipoSelect">
+        <option value="">--- Selecciona tipo ---</option>
+    </select>
+
+    <!-- Duración -->
+    <label for="duracionSelect">Duración:</label>
+    <select id="duracionSelect">
+        <option value="">--- Selecciona duración ---</option>
+    </select>
+
+    <!-- Campo oculto con el id real -->
+    <input type="hidden" name="id_membresia" id="idMembresiaInput" required>
+
+    <!-- Fechas -->
+    <label for="fecha_inicio">Fecha de inicio:</label>
+    {{ form.fecha_inicio }}
+
+    <label for="fecha_fin">Fecha de fin:</label>
+    {{ form.fecha_fin }}
+
+    <!-- Precio pagado -->
+    <label for="id_precio_pagado">Precio pagado:</label>
+    {{ form.precio_pagado }}
+
+    <!-- Estado -->
+    <label for="id_estado">Estado:</label>
+    {{ form.estado }}
+
+    <br><br>
+    <button type="submit">{% if is_editing %}Actualizar{% else %}Guardar inscripción{% endif %}</button>
+</form>
+
+<script>
+    const membresias = {{ membresia_data|safe }};
+    const tipoSelect = document.getElementById("tipoSelect");
+    const duracionSelect = document.getElementById("duracionSelect");
+    const idMembresiaInput = document.getElementById("idMembresiaInput");
+
+    // Llenar tipos únicos
+    const tipos = [...new Set(membresias.map(m => m.tipo))];
+    tipos.forEach(tipo => {
+        const option = document.createElement("option");
+        option.value = tipo;
+        option.textContent = tipo;
+        tipoSelect.appendChild(option);
+    });
+
+    tipoSelect.addEventListener("change", () => {
+        duracionSelect.innerHTML = '<option value="">--- Selecciona duración ---</option>';
+        idMembresiaInput.value = "";
+        const seleccionados = membresias.filter(m => m.tipo === tipoSelect.value);
+        const duraciones = [...new Set(seleccionados.map(m => m.duracion))];
+
+        duraciones.forEach(dur => {
+            const option = document.createElement("option");
+            option.value = dur;
+            option.textContent = dur;
+            duracionSelect.appendChild(option);
+        });
+    });
+
+    duracionSelect.addEventListener("change", () => {
+        const seleccion = membresias.find(m =>
+            m.tipo === tipoSelect.value && m.duracion === duracionSelect.value
+        );
+        if (seleccion) {
+            idMembresiaInput.value = seleccion.id;
+        }
+    });
+
+    // Precarga al editar
+    {% if is_editing %}
+    tipoSelect.value = "{{ tipo_actual }}";
+    tipoSelect.dispatchEvent(new Event('change'));
+    setTimeout(() => {
+        duracionSelect.value = "{{ duracion_actual }}";
+        duracionSelect.dispatchEvent(new Event('change'));
+    }, 150);
+    {% endif %}
+</script>

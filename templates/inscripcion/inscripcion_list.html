@@ -1,0 +1,41 @@
+<h1>Listado de Inscripciones</h1>
+
+<a href="{% url 'inscripcion_create' %}">Registrar nueva inscripción</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Tipo de Membresía</th>
+            <th>Duración</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Precio Pagado</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for insc in inscripciones %}
+            <tr>
+                <td>{{ insc.id_inscripcion }}</td>
+                <td>{{ insc.cliente }}</td>
+                <td>{{ insc.tipo_membresia }}</td>
+                <td>{{ insc.duracion }}</td>
+                <td>{{ insc.fecha_inicio }}</td>
+                <td>{{ insc.fecha_fin }}</td>
+                <td>{{ insc.precio_pagado }}</td>
+                <td>{{ insc.estado }}</td>
+                <td>
+                    <a href="{% url 'inscripcion_update' insc.id_inscripcion %}">Editar</a> |
+                    <a href="{% url 'inscripcion_delete' insc.id_inscripcion %}">Eliminar</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="9">No hay inscripciones registradas.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
