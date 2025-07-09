@@ -6,8 +6,35 @@ from core.services.cliente_service import obtener_clientes
 
 def cliente_list(request):
     clientes = obtener_clientes()
-    return render(request, 'cliente/cliente_list.html', {'clientes': clientes})
 
+    # FILTROS
+    search = request.GET.get("search", "").strip().lower()
+    genero = request.GET.get("genero", "")
+    order_by = request.GET.get("order_by", "")
+
+    if search:
+        clientes = [
+            c for c in clientes
+            if search in c['nombre'].lower()
+            or search in c['dni']
+            or search in c['email'].lower()
+        ]
+
+    if genero:
+        clientes = [c for c in clientes if c['genero'] == genero]
+
+    if order_by:
+        reverse = order_by.startswith('-')
+        key = order_by.lstrip('-')
+        clientes.sort(key=lambda x: x[key], reverse=reverse)
+
+    context = {
+        'clientes': clientes,
+        'search': request.GET.get("search", ""),
+        'genero': genero,
+        'order_by': order_by
+    }
+    return render(request, 'cliente/cliente_list.html', context)
 
 
 

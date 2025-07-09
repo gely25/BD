@@ -171,7 +171,7 @@ def rutina_delete(request, id_rutina):
             })
 
     conn.close()
-    return render(request, 'rutina/delete.html', {
+    return render(request, 'rutina/rutina_confirm_delete.html', {
         'id_rutina': id_rutina,
         'nombre_rutina': rutina[0]
     })

@@ -3,12 +3,23 @@
 <a href="{% url 'seguimiento_rutina_create' %}">Crear nuevo seguimiento</a>
 <form method="get">
     <input type="text" name="search" value="{{ search_query }}" placeholder="Buscar seguimiento Cliente.." minlength="3">
+    <input type="date" name="fecha_programada" value="{{ fecha_programada }}" placeholder="Fecha Programada">
+    <select name="estado_cumplimiento">
+        <option value="">Todos</option>
+        <option value="PENDIENTE" {% if estado_cumplimiento == "PENDIENTE" %}selected{% endif %}>Pendiente</option>
+        <option value="CUMPLIDO" {% if estado_cumplimiento == "CUMPLIDO" %}selected{% endif %}>Cumplido</option>
+        <option value="FALTO" {% if estado_cumplimiento == "FALTO" %}selected{% endif %}>Faltó</option>
+    </select>
     <button type="submit">Filtrar</button>
+    
+    <a href="{% url 'seguimiento_rutina_list' %}">Limpiar Filtros</a>
 </form>
+
 <form method="get">
-    <input type="hidden" name="order_by" value="dia_semana">
+    <input type="hidden" name="order_by" value="fecha_programada">
     <input type="hidden" name="search" value="{{ search_query }}">
-    <button type="submit" name="order_direction" value="asc">Ordenar Lunes a Domingo</button>
+    <button type="submit" name="order_direction" value="asc">Ordenar por Fecha Ascendente</button>
+    <button type="submit" name="order_direction" value="desc">Ordenar por Fecha Descendente</button>
 </form>
 
 <form method="get">

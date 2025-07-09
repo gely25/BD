@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Condiciones Físicas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a2e0f1f0d4.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gray-200 min-h-screen text-gray-800">
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+    <!-- TÍTULO y BOTÓN -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-extrabold flex items-center gap-2 text-gray-800">
+            <i class="fas fa-dumbbell text-blue-600 text-2xl"></i>
+            Listado de Condiciones Físicas
+        </h1>
+        <a href="{% url 'condicion_create' %}" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2">
+            <i class="fas fa-plus"></i> Nueva Condición
+        </a>
+    </div>
+
+    <!-- TABLA -->
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-blue-600 text-white uppercase text-xs">
+                <tr>
+                    <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Descripción</th>
+                    <th class="px-4 py-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+                {% for c in condiciones %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3">{{ c.id_condicion_fisica }}</td>
+                    <td class="px-4 py-3">{{ c.descripcion }}</td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <a href="{% url 'condicion_update' id_condicion_fisica=c.id_condicion_fisica %}" class="text-blue-600 font-medium hover:underline">
+                            ✏️ Editar
+                        </a>
+                        <a href="{% url 'condicion_delete' id_condicion_fisica=c.id_condicion_fisica %}" class="text-red-600 font-medium hover:underline">
+                            🗑️ Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center px-4 py-6 text-gray-500">No hay condiciones físicas registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- BOTÓN VOLVER AL INICIO -->
+    <div class="flex justify-center mt-6">
+        <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all duration-200">
+            <i class="fas fa-home"></i>
+            Volver al Inicio
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

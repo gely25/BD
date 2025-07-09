@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if is_editing %}Editar Seguimiento{% else %}Crear Seguimiento de Rutina{% endif %}</title>
+    <title>{% if is_editing %}Editar Condicion{% else %}Nuevo Registro de condicion fisica{% endif %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -13,25 +13,24 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-white text-xl font-bold">Sistema de Seguimiento</h1>
+                    <h1 class="text-white text-xl font-bold">Sistema de Condiciones Físicas</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Seguimientos</a>
-                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Rutinas</a>
-                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Clientes</a>
-                    <a href="#" class="text-white bg-blue-700 px-3 py-1 rounded">Progreso</a>
+                    <a href="{% url 'condicion_list' %}" class="text-white bg-blue-700 px-3 py-1 rounded">Condiciones</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Reportes</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Configuración</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto p-6">
+    <div class="max-w-4xl mx-auto p-6">
         <!-- Breadcrumb -->
         <nav class="flex mb-6" aria-label="Breadcrumb">
             <ol class="flex items-center space-x-4">
                 <li>
                     <div>
-                        <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <a href="{% url 'condicion_list' %}" class="text-gray-400 hover:text-gray-500">
                             <svg class="flex-shrink-0 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                             </svg>
@@ -44,7 +43,7 @@
                         <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Seguimientos</a>
+                        <a href="{% url 'condicion_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Condiciones Físicas</a>
                     </div>
                 </li>
                 <li>
@@ -52,7 +51,7 @@
                         <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="ml-4 text-sm font-medium text-gray-500">{% if is_editing %}Editar{% else %}Nuevo{% endif %}</span>
+                        <span class="ml-4 text-sm font-medium text-gray-500">{% if is_editing %}Editar{% else %}Nuevo Registro{% endif %}</span>
                     </div>
                 </li>
             </ol>
@@ -71,7 +70,7 @@
                                 </svg>
                             {% else %}
                                 <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                             {% endif %}
                         </div>
@@ -79,16 +78,16 @@
                     <div class="ml-4">
                         <h1 class="text-2xl font-bold text-white">
                             {% if is_editing %}
-                                Editar Seguimiento de Rutina
+                                Editar Condición Física
                             {% else %}
-                                Crear Nuevo Seguimiento
+                                Registrar Nueva Condición Física
                             {% endif %}
                         </h1>
                         <p class="text-blue-100 mt-1">
                             {% if is_editing %}
-                                Actualiza el progreso y métricas del entrenamiento
+                                Modifica la información de la condición física
                             {% else %}
-                                Registra el progreso y métricas de una sesión de entrenamiento
+                                Complete la información para registrar una nueva condición física
                             {% endif %}
                         </p>
                     </div>
@@ -100,36 +99,23 @@
                 <form method="post" class="space-y-6">
                     {% csrf_token %}
                     
-                    <!-- Non-field errors -->
-                    {% if form.non_field_errors %}
-                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <div class="flex">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-red-800">Se encontraron los siguientes errores:</h3>
-                                    <div class="mt-2 text-sm text-red-700">
-                                        {{ form.non_field_errors }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    
-                    <!-- Form fields -->
+                    <!-- Dynamic Form Fields -->
                     {% for field in form %}
-                        <div class="form-field">
+                        <div>
                             <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                                 <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    {% if field.name == 'nombre' or field.name == 'descripcion' %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    {% elif field.name == 'peso' or field.name == 'altura' %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    {% elif field.name == 'fecha' %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    {% else %}
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    {% endif %}
                                 </svg>
                                 {{ field.label }}
-                                {% if field.field.required %}
-                                    <span class="text-red-500">*</span>
-                                {% endif %}
+                                {% if field.field.required %}*{% endif %}
                             </label>
                             
                             <div class="relative rounded-md shadow-sm">
@@ -155,6 +141,22 @@
                         </div>
                     {% endfor %}
 
+                    <!-- Error general del formulario -->
+                    {% if error %}
+                        <div class="rounded-md bg-red-50 p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-red-800">{{ error }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                     <!-- Información adicional -->
                     <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div class="flex">
@@ -164,14 +166,12 @@
                                 </svg>
                             </div>
                             <div class="ml-3">
-                                <h3 class="text-sm font-medium text-blue-800">Consejos para un buen seguimiento</h3>
+                                <h3 class="text-sm font-medium text-blue-800">Información Importante</h3>
                                 <div class="mt-2 text-sm text-blue-700">
                                     <ul class="list-disc list-inside space-y-1">
-                                        <li>Registra las métricas inmediatamente después del entrenamiento</li>
-                                        <li>Anota cualquier dificultad o mejora observada durante la sesión</li>
-                                        <li>Incluye información sobre la intensidad percibida del ejercicio</li>
-                                        <li>Documenta cualquier modificación realizada a la rutina original</li>
-                                        <li>Registra el estado de ánimo y motivación del cliente</li>
+                                        <li>Complete todos los campos obligatorios marcados con asterisco (*)</li>
+                                        <li>Asegúrese de que la información sea precisa y actualizada</li>
+                                        <li>Los datos registrados se utilizarán para el seguimiento y análisis</li>
                                     </ul>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@
 
                     <!-- Action Buttons -->
                     <div class="flex items-center justify-between pt-6 border-t border-gray-200">
-                        <a href="{% url 'seguimiento_rutina_list' %}" 
+                        <a href="{% url 'condicion_list' %}" 
                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -194,12 +194,12 @@
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                 </svg>
-                                Actualizar Seguimiento
+                                Actualizar
                             {% else %}
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                 </svg>
-                                Guardar Seguimiento
+                                Guardar
                             {% endif %}
                         </button>
                     </div>
@@ -211,109 +211,42 @@
     <!-- JavaScript for form enhancements -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Elementos del formulario
-            const formInputs = document.querySelectorAll('input, select, textarea');
+            // Auto-focus en el primer campo del formulario
+            const firstField = document.querySelector('form input, form select, form textarea');
+            if (firstField) {
+                firstField.focus();
+            }
             
-            // Estilizar campos del formulario
-            formInputs.forEach(function(input) {
-                if (input.type !== 'hidden') {
-                    input.classList.add('mt-1', 'block', 'w-full', 'border-gray-300', 'rounded-md', 'shadow-sm', 'focus:ring-blue-500', 'focus:border-blue-500', 'sm:text-sm', 'px-3', 'py-2');
-                    
-                    if (input.tagName === 'SELECT') {
-                        input.classList.add('pr-10');
-                    }
-                    
-                    if (input.tagName === 'TEXTAREA') {
-                        input.classList.add('resize-vertical');
-                        input.rows = 4;
-                    }
+            // Agregar clases de Tailwind a todos los campos del formulario
+            const formFields = document.querySelectorAll('form input, form select, form textarea');
+            formFields.forEach(function(field) {
+                if (field.type === 'checkbox' || field.type === 'radio') {
+                    field.className = 'focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded';
+                } else {
+                    field.className = 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2';
                 }
             });
-
-            // Auto-focus en el primer campo
-            const firstInput = document.querySelector('input:not([type="hidden"]), select, textarea');
-            if (firstInput) {
-                firstInput.focus();
-            }
-
-            // Validación del formulario
+            
+            // Validación básica del formulario
             const form = document.querySelector('form');
             form.addEventListener('submit', function(e) {
+                const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
                 let hasErrors = false;
                 
-                // Validar campos requeridos
-                const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
                 requiredFields.forEach(function(field) {
                     if (!field.value.trim()) {
                         hasErrors = true;
-                        field.classList.add('border-red-500');
-                        field.classList.remove('border-gray-300');
+                        field.classList.add('border-red-300', 'focus:ring-red-500', 'focus:border-red-500');
                     } else {
-                        field.classList.remove('border-red-500');
-                        field.classList.add('border-gray-300');
-                    }
-                });
-                
-                // Validación específica para campos numéricos
-                const numericFields = document.querySelectorAll('input[type="number"]');
-                numericFields.forEach(function(field) {
-                    if (field.value && (isNaN(field.value) || field.value < 0)) {
-                        hasErrors = true;
-                        field.classList.add('border-red-500');
-                        field.classList.remove('border-gray-300');
+                        field.classList.remove('border-red-300', 'focus:ring-red-500', 'focus:border-red-500');
                     }
                 });
                 
                 if (hasErrors) {
                     e.preventDefault();
-                    alert('Por favor, corrija los errores en el formulario antes de continuar.');
-                    
-                    // Scroll al primer campo con error
-                    const firstError = document.querySelector('.border-red-500');
-                    if (firstError) {
-                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        firstError.focus();
-                    }
+                    alert('Por favor, complete todos los campos obligatorios.');
                     return false;
                 }
-            });
-            
-            // Remover clases de error al escribir
-            formInputs.forEach(function(input) {
-                input.addEventListener('input', function() {
-                    this.classList.remove('border-red-500');
-                    this.classList.add('border-gray-300');
-                });
-                
-                input.addEventListener('change', function() {
-                    this.classList.remove('border-red-500');
-                    this.classList.add('border-gray-300');
-                });
-            });
-
-            // Establecer fecha de hoy por defecto en campos de fecha
-            const todayFields = document.querySelectorAll('input[type="date"]');
-            todayFields.forEach(function(field) {
-                if (!field.value) {
-                    const today = new Date();
-                    const todayString = today.getFullYear() + '-' + 
-                                     String(today.getMonth() + 1).padStart(2, '0') + '-' + 
-                                     String(today.getDate()).padStart(2, '0');
-                    field.value = todayString;
-                }
-            });
-
-            // Contador de caracteres para textareas
-            const textareas = document.querySelectorAll('textarea');
-            textareas.forEach(function(textarea) {
-                const counter = document.createElement('div');
-                counter.className = 'text-sm text-gray-500 mt-1 text-right';
-                counter.textContent = `${textarea.value.length} caracteres`;
-                textarea.parentNode.insertBefore(counter, textarea.nextSibling);
-                
-                textarea.addEventListener('input', function() {
-                    counter.textContent = `${this.value.length} caracteres`;
-                });
             });
         });
     </script>

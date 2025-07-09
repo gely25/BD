@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
             --secondary: #64748b;
             --success: #10b981;
             --warning: #f59e0b;
@@ -30,24 +30,194 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             line-height: 1.6;
             color: var(--dark);
+            overflow-x: hidden;
+            position: relative;
         }
 
-        @keyframes gradientShift {
+        /* Fondo profesional y elegante */
+        .background-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-base {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                #0f172a 0%, 
+                #1e293b 25%, 
+                #334155 50%, 
+                #475569 75%, 
+                #64748b 100%);
+            background-size: 200% 200%;
+            animation: subtleGradientFlow 30s ease infinite;
+        }
+
+        @keyframes subtleGradientFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Patrón geométrico sutil */
+        .geometric-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+            animation: patternShift 60s linear infinite;
+        }
+
+        @keyframes patternShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Elementos flotantes minimalistas */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .element {
+            position: absolute;
+            opacity: 0.03;
+            animation: floatMinimal 25s infinite ease-in-out;
+        }
+
+        .element:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            top: 70%;
+            right: 10%;
+            animation-delay: -8s;
+        }
+
+        .element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: 30%;
+            left: 15%;
+            animation-delay: -15s;
+        }
+
+        .element:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 40%;
+            right: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatMinimal {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(20px, -15px) scale(1.05); }
+            66% { transform: translate(-15px, 10px) scale(0.95); }
+        }
+
+        /* Líneas de conexión profesionales */
+        .connection-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.02;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .grid-line.vertical {
+            width: 1px;
+            height: 100%;
+            left: 20%;
+        }
+
+        .grid-line.vertical:nth-child(2) {
+            left: 40%;
+        }
+
+        .grid-line.vertical:nth-child(3) {
+            left: 60%;
+        }
+
+        .grid-line.vertical:nth-child(4) {
+            left: 80%;
+        }
+
+        .grid-line.horizontal {
+            width: 100%;
+            height: 1px;
+            top: 25%;
+        }
+
+        .grid-line.horizontal:nth-child(6) {
+            top: 50%;
+        }
+
+        .grid-line.horizontal:nth-child(7) {
+            top: 75%;
+        }
+
+        /* Overlay sutil */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.1) 100%);
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
@@ -59,14 +229,14 @@
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 700;
             color: white;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
             margin-bottom: 0.5rem;
             letter-spacing: -0.02em;
         }
 
         .header .subtitle {
             font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 400;
         }
 
@@ -78,18 +248,19 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(20px);
             border-radius: var(--radius);
             padding: 1.5rem;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             background: white;
         }
 
@@ -116,14 +287,15 @@
         }
 
         .module-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(20px);
             border-radius: var(--radius);
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .module-card::before {
@@ -132,7 +304,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 3px;
             background: linear-gradient(90deg, var(--primary), var(--primary-hover));
             transform: scaleX(0);
             transform-origin: left;
@@ -141,7 +313,7 @@
 
         .module-card:hover {
             transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             background: white;
         }
 
@@ -164,7 +336,7 @@
             align-items: center;
             justify-content: center;
             margin-right: 1rem;
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.25);
         }
 
         .module-icon i {
@@ -215,13 +387,13 @@
         .btn-primary {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
 
         .btn-primary:hover {
             background: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
         }
 
         .btn-outline {
@@ -234,16 +406,17 @@
             background: var(--primary);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.25);
         }
 
         .quick-actions {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(20px);
             border-radius: var(--radius);
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .quick-actions h3 {
@@ -275,7 +448,7 @@
             border-color: var(--primary);
             background: white;
             transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .quick-btn i {
@@ -287,7 +460,7 @@
 
         .footer {
             text-align: center;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.875rem;
             margin-top: 3rem;
         }
@@ -327,6 +500,27 @@
     </style>
 </head>
 <body>
+    <div class="background-wrapper">
+        <div class="gradient-base"></div>
+        <div class="geometric-pattern"></div>
+        <div class="floating-elements">
+            <div class="element"></div>
+            <div class="element"></div>
+            <div class="element"></div>
+            <div class="element"></div>
+        </div>
+        <div class="connection-grid">
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line vertical"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line horizontal"></div>
+        </div>
+        <div class="overlay"></div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-dumbbell"></i> {{ title }}</h1>
@@ -345,6 +539,10 @@
             <div class="stat-card">
                 <span class="stat-number">156</span>
                 <span class="stat-label">Membresías</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">32</span>
+                <span class="stat-label">Empleados</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">98%</span>
@@ -381,6 +579,98 @@
                 </div>
             </div>
             {% endfor %}
+            
+            <!-- Sección de Condiciones Físicas -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">Condiciones Físicas</h3>
+                    </div>
+                </div>
+                <p class="module-description">Gestiona y registra las condiciones físicas de los clientes para un mejor seguimiento de su progreso y salud.</p>
+                <div class="module-actions">
+                    <a href="{% url 'condicion_list' %}" class="btn btn-primary">
+                        <i class="fas fa-list"></i>
+                        Ver Condiciones
+                    </a>
+                    <a href="{% url 'condicion_create' %}" class="btn btn-outline">
+                        <i class="fas fa-plus"></i>
+                        Nueva Condición
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sección de Roles -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">Roles y Permisos</h3>
+                    </div>
+                </div>
+                <p class="module-description">Administra los roles del sistema y configura los permisos de acceso para diferentes tipos de usuarios.</p>
+                <div class="module-actions">
+                    <a href="{% url 'rol_list' %}" class="btn btn-primary">
+                        <i class="fas fa-list"></i>
+                        Ver Roles
+                    </a>
+                    <a href="{% url 'rol_create' %}" class="btn btn-outline">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Rol
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sección de Empleados -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">Empleados</h3>
+                    </div>
+                </div>
+                <p class="module-description">Gestiona el personal del gimnasio, sus datos, roles y asignaciones para una operación eficiente.</p>
+                <div class="module-actions">
+                    <a href="{% url 'empleado_list' %}" class="btn btn-primary">
+                        <i class="fas fa-list"></i>
+                        Ver Empleados
+                    </a>
+                    <a href="{% url 'empleado_create' %}" class="btn btn-outline">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Empleado
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sección de Evaluaciones -->
+            <div class="module-card">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="module-title">Evaluaciones</h3>
+                    </div>
+                </div>
+                <p class="module-description">Realiza evaluaciones periódicas del progreso de los clientes y mantén un seguimiento detallado de su evolución.</p>
+                <div class="module-actions">
+                    <a href="{% url 'evaluacion_list' %}" class="btn btn-primary">
+                        <i class="fas fa-list"></i>
+                        Ver Evaluaciones
+                    </a>
+                    <a href="{% url 'evaluacion_create' %}" class="btn btn-outline">
+                        <i class="fas fa-plus"></i>
+                        Nueva Evaluación
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="quick-actions">
@@ -402,6 +692,22 @@
                     <i class="fas fa-id-badge"></i>
                     Nueva Membresía
                 </a>
+                <a href="{% url 'empleado_create' %}" class="quick-btn">
+                    <i class="fas fa-user-tie"></i>
+                    Nuevo Empleado
+                </a>
+                <a href="{% url 'evaluacion_create' %}" class="quick-btn">
+                    <i class="fas fa-chart-line"></i>
+                    Nueva Evaluación
+                </a>
+                <a href="{% url 'condicion_create' %}" class="quick-btn">
+                    <i class="fas fa-heartbeat"></i>
+                    Nueva Condición
+                </a>
+                <a href="{% url 'rol_create' %}" class="quick-btn">
+                    <i class="fas fa-user-shield"></i>
+                    Nuevo Rol
+                </a>
             </div>
         </div>
 
@@ -411,6 +717,4 @@
     </div>
 </body>
 </html>
-
-
 

@@ -187,3 +187,34 @@ class SeguimientoRutinaForm(forms.Form):
         self.fields['id_rutina'].choices = [(row[0], row[1]) for row in cursor.fetchall()]
 
         conn.close()
+        
+        
+        
+        
+        
+        
+        
+
+        
+class CondicionForm(forms.Form):
+    descripcion = forms.CharField(max_length=255)
+
+class RolForm(forms.Form):
+    descripcion = forms.CharField(max_length=255)
+
+class EmpleadoForm(forms.Form):
+    id_rol = forms.ChoiceField(label='Rol')
+    nombre = forms.CharField(max_length=255)
+    dni = forms.CharField(max_length=20)
+    telefono= forms.CharField(max_length=10)
+    email = forms.EmailField()
+
+class EvaluacionForm(forms.Form):
+    id_inscripcion = forms.ChoiceField(label="Inscripcion")
+    id_empleado = forms.ChoiceField(label="Empleado")
+    peso = forms.DecimalField()
+    altura = forms.DecimalField()
+    fecha = forms.DateField(label='Fecha')
+    grasa_corporal =forms.DecimalField()
+    presion_arterial =forms.CharField(max_length=10)
+    id_condicion_fisica= forms.ChoiceField(label="Condicion Fisica")

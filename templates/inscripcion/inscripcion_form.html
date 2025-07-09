@@ -1,91 +1,450 @@
-<h1>{% if is_editing %}Editar inscripción{% else %}Registrar nueva inscripción{% endif %}</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if is_editing %}Editar Inscripción{% else %}Registrar Nueva Inscripción{% endif %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-white text-xl font-bold">Sistema de Inscripciones</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Inscripciones</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Clientes</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Membresías</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<form method="post">
-    {% csrf_token %}
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <div>
+                        <a href="#" class="text-gray-400 hover:text-gray-500">
+                            <svg class="flex-shrink-0 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            <span class="sr-only">Inicio</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Inscripciones</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-4 text-sm font-medium text-gray-500">{% if is_editing %}Editar{% else %}Nueva{% endif %}</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
 
-    <!-- Cliente -->
-    <label for="id_cliente">Cliente:</label>
-    {{ form.id_cliente }}
+        <!-- Main Form Card -->
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="h-12 w-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            {% if is_editing %}
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            {% else %}
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                                </svg>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold text-white">
+                            {% if is_editing %}
+                                Editar Inscripción
+                            {% else %}
+                                Registrar Nueva Inscripción
+                            {% endif %}
+                        </h1>
+                        <p class="text-blue-100 mt-1">
+                            {% if is_editing %}
+                                Modifica los datos de la inscripción seleccionada
+                            {% else %}
+                                Complete la información para registrar una nueva inscripción
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Tipo de membresía -->
-    <label for="tipoSelect">Tipo de membresía:</label>
-    <select id="tipoSelect">
-        <option value="">--- Selecciona tipo ---</option>
-    </select>
+            <!-- Form Body -->
+            <div class="px-6 py-8">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Cliente Field -->
+                    <div>
+                        <label for="id_cliente" class="block text-sm font-medium text-gray-700 mb-2">
+                            <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            Cliente *
+                        </label>
+                        <div class="relative rounded-md shadow-sm">
+                            {{ form.id_cliente }}
+                        </div>
+                    </div>
 
-    <!-- Duración -->
-    <label for="duracionSelect">Duración:</label>
-    <select id="duracionSelect">
-        <option value="">--- Selecciona duración ---</option>
-    </select>
+                    <!-- Membership Selection -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Tipo de membresía -->
+                        <div>
+                            <label for="tipoSelect" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                                Tipo de Membresía *
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                <select id="tipoSelect" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2 pr-10">
+                                    <option value="">--- Selecciona tipo ---</option>
+                                </select>
+                            </div>
+                        </div>
 
-    <!-- Campo oculto con el id real -->
-    <input type="hidden" name="id_membresia" id="idMembresiaInput" required>
+                        <!-- Duración -->
+                        <div>
+                            <label for="duracionSelect" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Duración *
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                <select id="duracionSelect" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2 pr-10">
+                                    <option value="">--- Selecciona duración ---</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Fechas -->
-    <label for="fecha_inicio">Fecha de inicio:</label>
-    {{ form.fecha_inicio }}
+                    <!-- Campo oculto con el id real -->
+                    <input type="hidden" name="id_membresia" id="idMembresiaInput" required>
 
-    <label for="fecha_fin">Fecha de fin:</label>
-    {{ form.fecha_fin }}
+                    <!-- Fechas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Fecha de inicio -->
+                        <div>
+                            <label for="fecha_inicio" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Fecha de Inicio *
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                {{ form.fecha_inicio }}
+                            </div>
+                        </div>
 
-    <!-- Precio pagado -->
-    <label for="id_precio_pagado">Precio pagado:</label>
-    {{ form.precio_pagado }}
+                        <!-- Fecha de fin -->
+                        <div>
+                            <label for="fecha_fin" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Fecha de Fin *
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                {{ form.fecha_fin }}
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Estado -->
-    <label for="id_estado">Estado:</label>
-    {{ form.estado }}
+                    <!-- Precio y Estado -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Precio pagado -->
+                        <div>
+                            <label for="id_precio_pagado" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                                Precio Pagado *
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                {{ form.precio_pagado }}
+                            </div>
+                        </div>
 
-    <br><br>
-    <button type="submit">{% if is_editing %}Actualizar{% else %}Guardar inscripción{% endif %}</button>
-</form>
+                        <!-- Estado -->
+                        <div>
+                            <label for="id_estado" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Estado *
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                {{ form.estado }}
+                            </div>
+                        </div>
+                    </div>
 
-<script>
-    const membresias = {{ membresia_data|safe }};
-    const tipoSelect = document.getElementById("tipoSelect");
-    const duracionSelect = document.getElementById("duracionSelect");
-    const idMembresiaInput = document.getElementById("idMembresiaInput");
+                    <!-- Información adicional -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Información Importante</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Seleccione primero el tipo de membresía para ver las duraciones disponibles</li>
+                                        <li>La fecha de fin se calculará automáticamente según la duración seleccionada</li>
+                                        <li>Verifique que el precio pagado corresponda al tipo de membresía seleccionado</li>
+                                        <li>Todos los campos marcados con (*) son obligatorios</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    // Llenar tipos únicos
-    const tipos = [...new Set(membresias.map(m => m.tipo))];
-    tipos.forEach(tipo => {
-        const option = document.createElement("option");
-        option.value = tipo;
-        option.textContent = tipo;
-        tipoSelect.appendChild(option);
-    });
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                        <a href="#" 
+                           class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Cancelar
+                        </a>
+                        
+                        <button type="submit" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
+                            {% if is_editing %}
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                                Actualizar Inscripción
+                            {% else %}
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Guardar Inscripción
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-    tipoSelect.addEventListener("change", () => {
-        duracionSelect.innerHTML = '<option value="">--- Selecciona duración ---</option>';
-        idMembresiaInput.value = "";
-        const seleccionados = membresias.filter(m => m.tipo === tipoSelect.value);
-        const duraciones = [...new Set(seleccionados.map(m => m.duracion))];
+        <!-- Preview Card (if editing) -->
+        {% if is_editing %}
+            <div class="mt-6 bg-white shadow-lg rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    Vista Previa de la Inscripción
+                </h3>
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">Cliente seleccionado</div>
+                                <div class="text-sm text-gray-500">Estado: Activo</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900" id="preview-membresia">Membresía seleccionada</div>
+                                <div class="text-sm text-gray-500" id="preview-precio">Precio: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 
-        duraciones.forEach(dur => {
-            const option = document.createElement("option");
-            option.value = dur;
-            option.textContent = dur;
-            duracionSelect.appendChild(option);
+    <!-- JavaScript for form enhancements -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Datos de membresías
+            const membresias = {{ membresia_data|safe }};
+            const tipoSelect = document.getElementById("tipoSelect");
+            const duracionSelect = document.getElementById("duracionSelect");
+            const idMembresiaInput = document.getElementById("idMembresiaInput");
+            
+            // Elementos del formulario
+            const formInputs = document.querySelectorAll('input, select, textarea');
+            
+            // Estilizar campos del formulario
+            formInputs.forEach(function(input) {
+                if (input.type !== 'hidden') {
+                    input.classList.add('mt-1', 'block', 'w-full', 'border-gray-300', 'rounded-md', 'shadow-sm', 'focus:ring-blue-500', 'focus:border-blue-500', 'sm:text-sm', 'px-3', 'py-2');
+                    
+                    if (input.tagName === 'SELECT') {
+                        input.classList.add('pr-10');
+                    }
+                }
+            });
+
+            // Llenar tipos únicos
+            const tipos = [...new Set(membresias.map(m => m.tipo))];
+            tipos.forEach(tipo => {
+                const option = document.createElement("option");
+                option.value = tipo;
+                option.textContent = tipo;
+                tipoSelect.appendChild(option);
+            });
+
+            // Event listener para tipo de membresía
+            tipoSelect.addEventListener("change", () => {
+                duracionSelect.innerHTML = '<option value="">--- Selecciona duración ---</option>';
+                idMembresiaInput.value = "";
+                
+                if (tipoSelect.value) {
+                    const seleccionados = membresias.filter(m => m.tipo === tipoSelect.value);
+                    const duraciones = [...new Set(seleccionados.map(m => m.duracion))];
+
+                    duraciones.forEach(dur => {
+                        const option = document.createElement("option");
+                        option.value = dur;
+                        option.textContent = dur;
+                        duracionSelect.appendChild(option);
+                    });
+                    
+                    // Remover clase de error
+                    tipoSelect.classList.remove('border-red-500');
+                }
+            });
+
+            // Event listener para duración
+            duracionSelect.addEventListener("change", () => {
+                const seleccion = membresias.find(m =>
+                    m.tipo === tipoSelect.value && m.duracion === duracionSelect.value
+                );
+                
+                if (seleccion) {
+                    idMembresiaInput.value = seleccion.id;
+                    duracionSelect.classList.remove('border-red-500');
+                    
+                    // Actualizar vista previa si existe
+                    {% if is_editing %}
+                        const previewMembresia = document.getElementById('preview-membresia');
+                        const previewPrecio = document.getElementById('preview-precio');
+                        if (previewMembresia && previewPrecio) {
+                            previewMembresia.textContent = `${seleccion.tipo} - ${seleccion.duracion}`;
+                            previewPrecio.textContent = `Precio: $${seleccion.precio || '0.00'}`;
+                        }
+                    {% endif %}
+                }
+            });
+
+            // Precarga al editar
+            {% if is_editing %}
+                tipoSelect.value = "{{ tipo_actual }}";
+                tipoSelect.dispatchEvent(new Event('change'));
+                setTimeout(() => {
+                    duracionSelect.value = "{{ duracion_actual }}";
+                    duracionSelect.dispatchEvent(new Event('change'));
+                }, 150);
+            {% endif %}
+
+            // Validación del formulario
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                let hasErrors = false;
+                
+                // Validar selecciones de membresía
+                if (!tipoSelect.value) {
+                    tipoSelect.classList.add('border-red-500');
+                    hasErrors = true;
+                } else {
+                    tipoSelect.classList.remove('border-red-500');
+                }
+                
+                if (!duracionSelect.value) {
+                    duracionSelect.classList.add('border-red-500');
+                    hasErrors = true;
+                } else {
+                    duracionSelect.classList.remove('border-red-500');
+                }
+                
+                if (!idMembresiaInput.value) {
+                    hasErrors = true;
+                }
+                
+                // Validar campos requeridos
+                const requiredFields = document.querySelectorAll('input[required], select[required]');
+                requiredFields.forEach(function(field) {
+                    if (!field.value.trim()) {
+                        hasErrors = true;
+                        field.classList.add('border-red-500');
+                    } else {
+                        field.classList.remove('border-red-500');
+                    }
+                });
+                
+                if (hasErrors) {
+                    e.preventDefault();
+                    alert('Por favor, complete todos los campos obligatorios y seleccione tipo y duración de membresía.');
+                    return false;
+                }
+            });
+            
+            // Remover clases de error al escribir
+            formInputs.forEach(function(input) {
+                input.addEventListener('input', function() {
+                    this.classList.remove('border-red-500');
+                });
+                
+                input.addEventListener('change', function() {
+                    this.classList.remove('border-red-500');
+                });
+            });
+
+            // Auto-focus en el primer campo
+            const firstInput = document.querySelector('select, input:not([type="hidden"])');
+            if (firstInput) {
+                firstInput.focus();
+            }
         });
-    });
-
-    duracionSelect.addEventListener("change", () => {
-        const seleccion = membresias.find(m =>
-            m.tipo === tipoSelect.value && m.duracion === duracionSelect.value
-        );
-        if (seleccion) {
-            idMembresiaInput.value = seleccion.id;
-        }
-    });
-
-    // Precarga al editar
-    {% if is_editing %}
-    tipoSelect.value = "{{ tipo_actual }}";
-    tipoSelect.dispatchEvent(new Event('change'));
-    setTimeout(() => {
-        duracionSelect.value = "{{ duracion_actual }}";
-        duracionSelect.dispatchEvent(new Event('change'));
-    }, 150);
-    {% endif %}
-</script>
+    </script>
+</body>
+</html>

@@ -19,6 +19,17 @@ from core.views.tipomembresia import (
     tipo_membresia_delete
 )
 
+
+
+from core.views.condicion import condicion_create, condicion_list, condicion_delete, condicion_update
+from core.views.rol import rol_create, rol_list, rol_delete, rol_update
+from core.views.empleado import empleado_list, empleado_create, empleado_update, empleado_delete
+from core.views.evaluacion import evaluacion_list, evaluacion_create, evaluacion_update, evaluacion_delete
+
+
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -59,6 +70,34 @@ urlpatterns = [
     path('seguimiento_rutinas/create/', seguimiento_rutina.seguimiento_rutina_create, name='seguimiento_rutina_create'),
     path('seguimiento_rutinas/update/<int:id_seguimiento>/', seguimiento_rutina.seguimiento_rutina_update, name='seguimiento_rutina_update'),
     path('seguimiento_rutinas/delete/<int:id_seguimiento>/', seguimiento_rutina.seguimiento_rutina_delete, name='seguimiento_rutina_delete'),
+    
+    
+    path('condiciones/', condicion_list, name='condicion_list'),
+    path('condiciones/nuevo/', condicion_create, name='condicion_create'),
+    path('condiciones/<int:id_condicion_fisica>/eliminar/', condicion_delete, name='condicion_delete'),
+    path('condiciones/<int:id_cliente>/editar/', condicion_update, name='condicion_update'),
+    path('roles/', rol_list, name='rol_list'),
+    path('roles/nuevo/', rol_create, name='rol_create'),
+    path('roles/<int:id_rol>/editar/', rol_update, name='rol_update'),
+    path('roles/<int:id_rol>/eliminar/', rol_delete, name='rol_delete'),
+
+ 
+    # urls.py
+    path('condiciones/<int:id_condicion_fisica>/editar/', condicion_update, name='condicion_update'),
+    path('condiciones/<int:id_condicion_fisica>/eliminar/', condicion_delete, name='condicion_delete'),
+
+    path('empleados/', empleado_list, name='empleado_list'),
+    path('empleados/nuevo/', empleado_create, name='empleado_create'),
+    path('empleados/<int:id_empleado>/editar/', empleado_update, name='empleado_update'),
+    path('empleados/<int:id_empleado>/eliminar/', empleado_delete, name='empleado_delete'),
+    path('evaluaciones/', evaluacion_list, name='evaluacion_list'),
+    path('evaluaciones/nuevo/', evaluacion_create, name='evaluacion_create'),
+    path('evaluaciones/<int:id_evaluacion>/editar/', evaluacion_update, name='evaluacion_update'),
+    path('evaluaciones/<int:id_evaluacion>/eliminar/', evaluacion_delete, name='evaluacion_delete'),
+    
+    
+    
+    
 ]
 
 

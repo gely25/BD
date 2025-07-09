@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from core.conexion import obtener_conexion
 
@@ -8,13 +7,15 @@ def seguimiento_rutina_list(request):
 
     # Obtener parámetros de búsqueda y ordenamiento
     search_query = request.GET.get('search', '').strip()
-    order_by = request.GET.get('order_by', 'id_rutina')
+    order_by = request.GET.get('order_by', 'fecha_programada')
     order_direction = request.GET.get('order_direction', 'asc')
+    fecha_programada = request.GET.get('fecha_programada', '')
+    estado_cumplimiento = request.GET.get('estado_cumplimiento', '')
 
     # Validar campos permitidos para evitar inyección SQL
-    allowed_order_fields = ['id_rutina', 'dia_semana', 'nombre_cliente']
+    allowed_order_fields = ['id_rutina', 'fecha_programada', 'nombre_cliente']
     if order_by not in allowed_order_fields:
-        order_by = 'id_rutina'
+        order_by = 'fecha_programada'
 
     # Validar dirección de ordenamiento
     if order_direction not in ['asc', 'desc']:
@@ -28,9 +29,18 @@ def seguimiento_rutina_list(request):
         JOIN SGG_T_Inscripcion i ON r.id_evaluacion = i.id_inscripcion
         JOIN SGG_M_Cliente c ON i.id_cliente = c.id_cliente
         WHERE LOWER(c.nombre) LIKE ?
-        ORDER BY {order_by} {order_direction}
     """
     params = [f'%{search_query.lower()}%'] if len(search_query) >= 3 else ['%']
+
+    # Añadir filtros de fecha_programada y estado_cumplimiento
+    if fecha_programada:
+        query += " AND sr.fecha_programada = ?"
+        params.append(fecha_programada)
+    if estado_cumplimiento:
+        query += " AND sr.estado_cumplimiento = ?"
+        params.append(estado_cumplimiento)
+
+    query += f" ORDER BY sr.{order_by} {order_direction}"
 
     try:
         # Ejecutar la consulta
@@ -58,7 +68,9 @@ def seguimiento_rutina_list(request):
         'seguimientos': seguimientos_data,
         'search_query': search_query,
         'order_by': order_by,
-        'order_direction': order_direction
+        'order_direction': order_direction,
+        'fecha_programada': fecha_programada,
+        'estado_cumplimiento': estado_cumplimiento
     })
 
 
@@ -173,7 +185,7 @@ def seguimiento_rutina_delete(request, id_seguimiento):
             })
 
     conn.close()
-    return render(request, 'seguimiento_rutina/delete.html', {
+    return render(request, 'seguimiento_rutina/seguimiento_rutina_confirm_delete.html', {
         'id_seguimiento': id_seguimiento,
         'dia_semana': seguimiento[0]
     })

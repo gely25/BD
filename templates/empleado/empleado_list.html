@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Listado de Empleados</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a2e0f1f0d4.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+
+    <!-- TÍTULO y BOTÓN -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-extrabold flex items-center gap-2 text-gray-800">
+            <i class="fas fa-users text-blue-600 text-2xl"></i> Listado de Empleados
+        </h1>
+        <a href="{% url 'empleado_create' %}" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2">
+            ➕ Registrar Empleado
+        </a>
+    </div>
+
+    <!-- FILTROS -->
+    <form method="get" class="mb-6 flex flex-wrap gap-4 items-end">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar por nombre, DNI o email" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm w-64">
+        
+        <select name="rol" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm">
+            <option value="">Todos los roles</option>
+            {% for id_rol, descripcion in roles %}
+                <option value="{{ id_rol }}" {% if rol_filtro == id_rol|stringformat:"s" %}selected{% endif %}>{{ descripcion }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
+            Filtrar
+        </button>
+
+        <a href="{% url 'empleado_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg shadow">
+            Limpiar Filtros
+        </a>
+    </form>
+
+    <!-- TABLA -->
+    <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-blue-600 text-white uppercase text-xs">
+                <tr>
+                    {% for col, label in columnas %}
+                        {% with new_dir="asc" %}
+                            {% if orden_actual == col and direccion == "asc" %}
+                                {% with new_dir="desc" %}{% endwith %}
+                            {% endif %}
+                            <th class="px-4 py-3">
+                                <a href="?orden={{ col }}&direccion={{ new_dir }}{% if q %}&q={{ q }}{% endif %}{% if rol_filtro %}&rol={{ rol_filtro }}{% endif %}" class="hover:underline">
+                                    {{ label }}
+                                    {% if orden_actual == col %}
+                                        {% if direccion == "asc" %}▲{% else %}▼{% endif %}
+                                    {% endif %}
+                                </a>
+                            </th>
+                        {% endwith %}
+                    {% endfor %}
+                    <th class="px-4 py-3 text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+                {% for insc in inscripciones %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3">{{ insc.id_empleado }}</td>
+                    <td class="px-4 py-3">{{ insc.rol }}</td>
+                    <td class="px-4 py-3">{{ insc.nombre }}</td>
+                    <td class="px-4 py-3">{{ insc.dni }}</td>
+                    <td class="px-4 py-3">{{ insc.telefono }}</td>
+                    <td class="px-4 py-3">{{ insc.email }}</td>
+                    <td class="px-4 py-3 text-center space-x-2">
+                        <a href="{% url 'empleado_update' insc.id_empleado %}" class="text-blue-600 font-medium hover:underline">✏️ Editar</a>
+                        <a href="{% url 'empleado_delete' insc.id_empleado %}" class="text-red-600 font-medium hover:underline">🗑️ Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{{ columnas|length|add:'1' }}" class="text-center px-4 py-6 text-gray-500">No hay empleados registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- BOTÓN VOLVER AL INICIO -->
+    <div class="flex justify-center mt-6">
+        <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all duration-200">
+            <i class="fas fa-home"></i> Volver al Inicio
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

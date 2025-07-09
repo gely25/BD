@@ -1,41 +1,72 @@
-<h1>Listado de Inscripciones</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Inscripciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a2e0f1f0d4.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
 
-<a href="{% url 'inscripcion_create' %}">Registrar nueva inscripción</a>
+<div class="max-w-7xl mx-auto px-6 py-10">
+    <!-- Título y botón de nueva inscripción -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-extrabold flex items-center gap-2 text-gray-800">
+            <i class="fas fa-file-signature text-indigo-600 text-2xl"></i> Listado de Inscripciones
+        </h1>
+        <a href="{% url 'inscripcion_create' %}" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2">
+            ➕ Registrar nueva inscripción
+        </a>
+    </div>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Tipo de Membresía</th>
-            <th>Duración</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
-            <th>Precio Pagado</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for insc in inscripciones %}
-            <tr>
-                <td>{{ insc.id_inscripcion }}</td>
-                <td>{{ insc.cliente }}</td>
-                <td>{{ insc.tipo_membresia }}</td>
-                <td>{{ insc.duracion }}</td>
-                <td>{{ insc.fecha_inicio }}</td>
-                <td>{{ insc.fecha_fin }}</td>
-                <td>{{ insc.precio_pagado }}</td>
-                <td>{{ insc.estado }}</td>
-                <td>
-                    <a href="{% url 'inscripcion_update' insc.id_inscripcion %}">Editar</a> |
-                    <a href="{% url 'inscripcion_delete' insc.id_inscripcion %}">Eliminar</a>
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="9">No hay inscripciones registradas.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- Tabla de inscripciones -->
+    <div class="overflow-x-auto bg-white shadow-lg rounded-xl">
+        <table class="min-w-full divide-y divide-gray-200 text-sm text-center">
+            <thead class="bg-indigo-600 text-white uppercase text-xs">
+                <tr>
+                    <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Cliente</th>
+                    <th class="px-4 py-3">Membresía</th>
+                    <th class="px-4 py-3">Duración</th>
+                    <th class="px-4 py-3">Fecha Inicio</th>
+                    <th class="px-4 py-3">Fecha Fin</th>
+                    <th class="px-4 py-3">Precio Pagado</th>
+                    <th class="px-4 py-3">Estado</th>
+                    <th class="px-4 py-3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+                {% for insc in inscripciones %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3">{{ insc.id_inscripcion }}</td>
+                    <td class="px-4 py-3">{{ insc.cliente }}</td>
+                    <td class="px-4 py-3">{{ insc.tipo_membresia }}</td>
+                    <td class="px-4 py-3">{{ insc.duracion }}</td>
+                    <td class="px-4 py-3">{{ insc.fecha_inicio }}</td>
+                    <td class="px-4 py-3">{{ insc.fecha_fin }}</td>
+                    <td class="px-4 py-3">{{ insc.precio_pagado }}</td>
+                    <td class="px-4 py-3">{{ insc.estado }}</td>
+                    <td class="px-4 py-3 space-x-2">
+                        <a href="{% url 'inscripcion_update' insc.id_inscripcion %}" class="text-blue-600 hover:underline font-medium">✏️ Editar</a>
+                        <a href="{% url 'inscripcion_delete' insc.id_inscripcion %}" class="text-red-600 hover:underline font-medium">🗑️ Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center px-4 py-6 text-gray-500">No hay inscripciones registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botón de volver al inicio -->
+    <div class="flex justify-center mt-6">
+        <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all duration-200">
+            <i class="fas fa-home"></i> Volver al Inicio
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

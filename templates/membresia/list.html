@@ -7,139 +7,181 @@
     <title>Listado de Membresías</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4 md:p-8">
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-white text-xl font-bold">Sistema de Membresías</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-white bg-blue-700 px-3 py-1 rounded">Membresías</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Tipos</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Duraciones</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <div class="max-w-7xl mx-auto bg-white shadow rounded-lg p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-gray-800">Membresías</h1>
-            <a href="{% url 'membresia_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-                + Nueva Membresía
-            </a>
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Listado de Membresías</h1>
+                    <p class="text-gray-600 mt-1">Gestiona todas las membresías disponibles en el sistema</p>
+                </div>
+                <a href="{% url 'membresia_create' %}" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Nueva Membresía
+                </a>
+            </div>
         </div>
 
         <!-- Formulario de filtros Y ordenamiento -->
-        <form method="get" class="bg-gray-50 p-4 rounded-lg mb-6">
-            <!-- FILTROS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 mb-4">
-                <!-- Campo de búsqueda -->
-                <div class="xl:col-span-2">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Buscar</label>
-                    <input type="text" 
-                           name="q" 
-                           placeholder="Buscar por tipo, duración o descripción..." 
-                           value="{{ request.GET.q }}" 
-                           class="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <form method="get">
+                <!-- FILTROS -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">🔍 Filtros de búsqueda</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                        <!-- Campo de búsqueda -->
+                        <div class="xl:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+                            <input type="text" 
+                                   name="q" 
+                                   placeholder="Buscar por tipo, duración o descripción..." 
+                                   value="{{ request.GET.q }}" 
+                                   class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
 
-                <!-- Filtro por tipo -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Tipo</label>
-                    <select name="tipo" class="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">-- Todos los tipos --</option>
-                        {% for tipo in tipos %}
-                            <option value="{{ tipo.id }}" {% if request.GET.tipo == tipo.id|stringformat:"s" %}selected{% endif %}>
-                                {{ tipo.descripcion }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                        <!-- Filtro por tipo -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label>
+                            <select name="tipo" class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">-- Todos los tipos --</option>
+                                {% for tipo in tipos %}
+                                    <option value="{{ tipo.id }}" {% if request.GET.tipo == tipo.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ tipo.descripcion }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                <!-- Filtro por duración -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Duración</label>
-                    <select name="duracion" class="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">-- Todas las duraciones --</option>
-                        {% for duracion in duraciones %}
-                            <option value="{{ duracion.id }}" {% if request.GET.duracion == duracion.id|stringformat:"s" %}selected{% endif %}>
-                                {{ duracion.descripcion }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                        <!-- Filtro por duración -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Duración</label>
+                            <select name="duracion" class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">-- Todas las duraciones --</option>
+                                {% for duracion in duraciones %}
+                                    <option value="{{ duracion.id }}" {% if request.GET.duracion == duracion.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ duracion.descripcion }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                <!-- Filtro de precio -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Precio</label>
-                    <div class="flex gap-1">
-                        <select name="precio_op" class="border border-gray-300 px-2 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 70px;">
-                            <option value="">--</option>
-                            <option value="lt" {% if request.GET.precio_op == "lt" %}selected{% endif %}>&lt;</option>
-                            <option value="gt" {% if request.GET.precio_op == "gt" %}selected{% endif %}>&gt;</option>
-                            <option value="eq" {% if request.GET.precio_op == "eq" %}selected{% endif %}>=</option>
-                        </select>
-                        <input type="number" 
-                               name="precio_valor" 
-                               placeholder="Valor" 
-                               value="{{ request.GET.precio_valor }}" 
-                               step="0.01"
-                               min="0"
-                               class="flex-1 border border-gray-300 px-2 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-            </div>
-
-            <!-- ORDENAMIENTO -->
-            <div class="border-t pt-4 mt-4">
-                <h3 class="text-sm font-medium text-gray-700 mb-3">🔄 Ordenamiento</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                    <!-- Ordenar por -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Ordenar por</label>
-                        <select name="sort" class="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="0" {% if request.GET.sort == "0" or not request.GET.sort %}selected{% endif %}>ID</option>
-                            <option value="1" {% if request.GET.sort == "1" %}selected{% endif %}>Tipo</option>
-                            <option value="2" {% if request.GET.sort == "2" %}selected{% endif %}>Duración</option>
-                            <option value="3" {% if request.GET.sort == "3" %}selected{% endif %}>Precio</option>
-                            <option value="4" {% if request.GET.sort == "4" %}selected{% endif %}>Descripción</option>
-                        </select>
-                    </div>
-
-                    <!-- Dirección -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Dirección</label>
-                        <select name="desc" class="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="0" {% if request.GET.desc == "0" or not request.GET.desc %}selected{% endif %}>⬆️ Ascendente (A-Z, 1-9)</option>
-                            <option value="1" {% if request.GET.desc == "1" %}selected{% endif %}>⬇️ Descendente (Z-A, 9-1)</option>
-                        </select>
-                    </div>
-
-                    <!-- Ordenamiento rápido -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Ordenamiento rápido</label>
-                        <div class="flex gap-1">
-                            <button type="button" onclick="quickSort('3', '1')" 
-                                    class="flex-1 bg-green-500 hover:bg-green-600 text-white px-2 py-2 rounded text-xs transition-colors">
-                                💰 Precio ⬇️
-                            </button>
-                            <button type="button" onclick="quickSort('3', '0')" 
-                                    class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-2 py-2 rounded text-xs transition-colors">
-                                💰 Precio ⬆️
-                            </button>
+                        <!-- Filtro de precio -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Precio</label>
+                            <div class="flex gap-2">
+                                <select name="precio_op" class="border border-gray-300 px-2 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" style="width: 70px;">
+                                    <option value="">--</option>
+                                    <option value="lt" {% if request.GET.precio_op == "lt" %}selected{% endif %}>&lt;</option>
+                                    <option value="gt" {% if request.GET.precio_op == "gt" %}selected{% endif %}>&gt;</option>
+                                    <option value="eq" {% if request.GET.precio_op == "eq" %}selected{% endif %}>=</option>
+                                </select>
+                                <input type="number" 
+                                       name="precio_valor" 
+                                       placeholder="Valor" 
+                                       value="{{ request.GET.precio_valor }}" 
+                                       step="0.01"
+                                       min="0"
+                                       class="flex-1 border border-gray-300 px-2 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Botones de acción -->
-            <div class="flex flex-wrap gap-2 pt-3 border-t">
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors">
-                    🔍 Aplicar filtros
-                </button>
-                <a href="{% url 'membresia_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition-colors">
-                    🗑️ Limpiar todo
-                </a>
-                <button type="button" onclick="resetSort()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded transition-colors">
-                    🔄 Solo ordenamiento
-                </button>
-            </div>
-        </form>
+                <!-- ORDENAMIENTO -->
+                <div class="border-t border-gray-200 pt-6 mb-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">🔄 Ordenamiento</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Ordenar por -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ordenar por</label>
+                            <select name="sort" class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="0" {% if request.GET.sort == "0" or not request.GET.sort %}selected{% endif %}>ID</option>
+                                <option value="1" {% if request.GET.sort == "1" %}selected{% endif %}>Tipo</option>
+                                <option value="2" {% if request.GET.sort == "2" %}selected{% endif %}>Duración</option>
+                                <option value="3" {% if request.GET.sort == "3" %}selected{% endif %}>Precio</option>
+                                <option value="4" {% if request.GET.sort == "4" %}selected{% endif %}>Descripción</option>
+                            </select>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+                            <select name="desc" class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="0" {% if request.GET.desc == "0" or not request.GET.desc %}selected{% endif %}>⬆️ Ascendente (A-Z, 1-9)</option>
+                                <option value="1" {% if request.GET.desc == "1" %}selected{% endif %}>⬇️ Descendente (Z-A, 9-1)</option>
+                            </select>
+                        </div>
+
+                        <!-- Ordenamiento rápido -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ordenamiento rápido</label>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="quickSort('3', '1')" 
+                                        class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm transition-colors">
+                                    💰 Precio ⬇️
+                                </button>
+                                <button type="button" onclick="quickSort('3', '0')" 
+                                        class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm transition-colors">
+                                    💰 Precio ⬆️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Aplicar filtros
+                    </button>
+                    <a href="{% url 'membresia_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Limpiar todo
+                    </a>
+                    <button type="button" onclick="resetSort()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Solo ordenamiento
+                    </button>
+                </div>
+            </form>
+        </div>
 
         <!-- Información actual -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex flex-wrap items-center gap-4 text-sm">
-                <div>
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                    </svg>
                     <strong>Ordenamiento actual:</strong> 
-                    <span class="text-blue-800">
+                    <span class="text-blue-800 ml-2">
                         {% if request.GET.sort == "0" or not request.GET.sort %}ID{% endif %}
                         {% if request.GET.sort == "1" %}Tipo{% endif %}
                         {% if request.GET.sort == "2" %}Duración{% endif %}
@@ -150,12 +192,17 @@
                 </div>
                 
                 {% if request.GET.q or request.GET.tipo or request.GET.duracion or request.GET.precio_op %}
-                <div>
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                    </svg>
                     <strong>Filtros activos:</strong>
-                    {% if request.GET.q %}<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mr-1">Búsqueda: "{{ request.GET.q }}"</span>{% endif %}
-                    {% if request.GET.tipo %}<span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs mr-1">Tipo</span>{% endif %}
-                    {% if request.GET.duracion %}<span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs mr-1">Duración</span>{% endif %}
-                    {% if request.GET.precio_op %}<span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs mr-1">Precio</span>{% endif %}
+                    <div class="ml-2 flex flex-wrap gap-1">
+                        {% if request.GET.q %}<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Búsqueda: "{{ request.GET.q }}"</span>{% endif %}
+                        {% if request.GET.tipo %}<span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">Tipo</span>{% endif %}
+                        {% if request.GET.duracion %}<span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">Duración</span>{% endif %}
+                        {% if request.GET.precio_op %}<span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Precio</span>{% endif %}
+                    </div>
                 </div>
                 {% endif %}
             </div>
@@ -163,140 +210,286 @@
 
         <!-- Información de resultados -->
         {% if page_obj %}
-            <div class="mb-4 text-sm text-gray-600">
-                Mostrando {{ page_obj.start_index }}-{{ page_obj.end_index }} de {{ page_obj.paginator.count }} resultados
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-600">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Mostrando {{ page_obj.start_index }}-{{ page_obj.end_index }} de {{ page_obj.paginator.count }} resultados
+                    </div>
+                    <div class="text-lg font-bold text-gray-900">
+                        {{ page_obj.paginator.count }} membresía{{ page_obj.paginator.count|pluralize:"s" }}
+                    </div>
+                </div>
             </div>
         {% endif %}
 
-        <!-- Tabla simplificada -->
-        <div class="overflow-x-auto">
-            <table class="min-w-full border border-gray-200 text-sm">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-4 py-3 text-left font-medium text-gray-700">
-                            ID {% if request.GET.sort == "0" or not request.GET.sort %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
-                        </th>
-                        <th class="px-4 py-3 text-left font-medium text-gray-700">
-                            Tipo {% if request.GET.sort == "1" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
-                        </th>
-                        <th class="px-4 py-3 text-left font-medium text-gray-700">
-                            Duración {% if request.GET.sort == "2" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
-                        </th>
-                        <th class="px-4 py-3 text-left font-medium text-gray-700">
-                            Precio {% if request.GET.sort == "3" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
-                        </th>
-                        <th class="px-4 py-3 text-left font-medium text-gray-700">
-                            Descripción {% if request.GET.sort == "4" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
-                        </th>
-                        <th class="px-4 py-3 text-center font-medium text-gray-700">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {% for row in page_obj %}
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-4 py-3 font-medium text-gray-900">{{ row.0 }}</td>
-                            <td class="px-4 py-3 text-gray-700">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    {{ row.1 }}
-                                </span>
-                            </td>
-                            <td class="px-4 py-3 text-gray-700">{{ row.2 }}</td>
-                            <td class="px-4 py-3 text-gray-900 font-semibold">${{ row.3|floatformat:2 }}</td>
-                            <td class="px-4 py-3 text-gray-700">{{ row.4|default_if_none:"Sin descripción" }}</td>
-                            <td class="px-4 py-3 text-center">
-                                <div class="flex justify-center space-x-2">
-                                    <a href="{% url 'membresia_update' row.0 %}" 
-                                       class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">
-                                        Editar
-                                    </a>
-                                    <a href="{% url 'membresia_delete' row.0 %}" 
-                                       class="text-red-600 hover:text-red-800 hover:underline transition-colors"
-                                       onclick="return confirm('¿Estás seguro de eliminar esta membresía?')">
-                                        Eliminar
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="6" class="text-center py-8 text-gray-500">
-                                <div class="flex flex-col items-center">
-                                    <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <p class="text-lg font-medium mb-2">No se encontraron resultados</p>
-                                    <p class="text-sm">Intenta ajustar los filtros de búsqueda</p>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- Tabla -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Lista de Membresías</h3>
+            </div>
+
+            {% if page_obj %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ID {% if request.GET.sort == "0" or not request.GET.sort %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Tipo {% if request.GET.sort == "1" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Duración {% if request.GET.sort == "2" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Precio {% if request.GET.sort == "3" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Descripción {% if request.GET.sort == "4" %}{% if request.GET.desc == "1" %}⬇️{% else %}⬆️{% endif %}{% endif %}
+                                </th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Acciones
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for row in page_obj %}
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            #{{ row.0 }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                            </svg>
+                                            {{ row.1 }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="ml-2">
+                                                <div class="text-sm font-medium text-gray-900">{{ row.2 }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="ml-2">
+                                                <div class="text-lg font-bold text-gray-900">${{ row.3|floatformat:2 }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">{{ row.4|default_if_none:"Sin descripción" }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        <div class="flex justify-center space-x-2">
+                                            <a href="{% url 'membresia_update' row.0 %}" 
+                                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs transition-colors">
+                                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                                Editar
+                                            </a>
+                                            <a href="{% url 'membresia_delete' row.0 %}" 
+                                               class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition-colors"
+                                               onclick="return confirm('¿Estás seguro de eliminar esta membresía?')">
+                                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                                Eliminar
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-12">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        <h3 class="mt-2 text-sm font-medium text-gray-900">No se encontraron resultados</h3>
+                                        <p class="mt-1 text-sm text-gray-500">Intenta ajustar los filtros de búsqueda.</p>
+                                        <div class="mt-6">
+                                            <a href="{% url 'membresia_create' %}" 
+                                               class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                </svg>
+                                                Crear Membresía
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No hay membresías disponibles</h3>
+                    <p class="mt-1 text-sm text-gray-500">Comienza creando tu primera membresía.</p>
+                    <div class="mt-6">
+                        <a href="{% url 'membresia_create' %}" 
+                           class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Crear Membresía
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
 
-        <!-- Paginación -->
+     
+
+
+            <!-- Paginación -->
         {% if page_obj.has_other_pages %}
-            <div class="mt-6 flex justify-center">
-                <nav class="flex items-center space-x-2">
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-6">
+            <nav class="flex items-center justify-between">
+                <div class="flex-1 flex justify-between sm:hidden">
+                    <!-- Navegación móvil -->
                     {% if page_obj.has_previous %}
-                        <a href="?q={{ request.GET.q }}&tipo={{ request.GET.tipo }}&duracion={{ request.GET.duracion }}&precio_op={{ request.GET.precio_op }}&precio_valor={{ request.GET.precio_valor }}&sort={{ request.GET.sort }}&desc={{ request.GET.desc }}&page={{ page_obj.previous_page_number }}" 
-                           class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors">
-                            ← Anterior
+                        <a href="?page={{ page_obj.previous_page_number }}" 
+                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Anterior
                         </a>
+                    {% else %}
+                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-400 bg-gray-100 cursor-not-allowed">
+                            Anterior
+                        </span>
                     {% endif %}
-
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <span class="px-3 py-2 bg-blue-600 text-white rounded font-medium">{{ num }}</span>
-                        {% else %}
-                            <a href="?q={{ request.GET.q }}&tipo={{ request.GET.tipo }}&duracion={{ request.GET.duracion }}&precio_op={{ request.GET.precio_op }}&precio_valor={{ request.GET.precio_valor }}&sort={{ request.GET.sort }}&desc={{ request.GET.desc }}&page={{ num }}" 
-                               class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors">
-                                {{ num }}
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-
+                    
                     {% if page_obj.has_next %}
-                        <a href="?q={{ request.GET.q }}&tipo={{ request.GET.tipo }}&duracion={{ request.GET.duracion }}&precio_op={{ request.GET.precio_op }}&precio_valor={{ request.GET.precio_valor }}&sort={{ request.GET.sort }}&desc={{ request.GET.desc }}&page={{ page_obj.next_page_number }}" 
-                           class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors">
-                            Siguiente →
+                        <a href="?page={{ page_obj.next_page_number }}" 
+                        class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Siguiente
                         </a>
+                    {% else %}
+                        <span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-400 bg-gray-100 cursor-not-allowed">
+                            Siguiente
+                        </span>
                     {% endif %}
-                </nav>
-            </div>
+                </div>
+                
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm text-gray-700">
+                            Mostrando
+                            <span class="font-medium">{{ page_obj.start_index }}</span>
+                            a
+                            <span class="font-medium">{{ page_obj.end_index }}</span>
+                            de
+                            <span class="font-medium">{{ page_obj.paginator.count }}</span>
+                            resultados
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                            <!-- Botón Anterior -->
+                            {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}" 
+                                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">Anterior</span>
+                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            {% else %}
+                                <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                                    <span class="sr-only">Anterior</span>
+                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </span>
+                            {% endif %}
+                            
+                            <!-- Números de página -->
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-600 text-sm font-medium text-white">
+                                        {{ num }}
+                                    </span>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <a href="?page={{ num }}" 
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        {{ num }}
+                                    </a>
+                                {% elif num == 1 %}
+                                    <a href="?page={{ num }}" 
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        {{ num }}
+                                    </a>
+                                    {% if page_obj.number > 4 %}
+                                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                            ...
+                                        </span>
+                                    {% endif %}
+                                {% elif num == page_obj.paginator.num_pages %}
+                                    {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+                                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                            ...
+                                        </span>
+                                    {% endif %}
+                                    <a href="?page={{ num }}" 
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        {{ num }}
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <!-- Botón Siguiente -->
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" 
+                                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">Siguiente</span>
+                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            {% else %}
+                                <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                                    <span class="sr-only">Siguiente</span>
+                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </span>
+                            {% endif %}
+                        </nav>
+                    </div>
+                </div>
+            </nav>
+        </div>
         {% endif %}
+        <!-- Fin de la paginación -->
+            <!-- BOTÓN VOLVER AL INICIO -->
+        <div class="flex justify-center mt-6">
+            <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all duration-200">
+                <i class="fas fa-home"></i> Volver al Inicio
+            </a>
+        </div>
     </div>
-
-    <!-- JavaScript para funciones de ordenamiento -->
-    <script>
-        function quickSort(sortValue, descValue) {
-            // Cambiar los valores del formulario
-            document.querySelector('select[name="sort"]').value = sortValue;
-            document.querySelector('select[name="desc"]').value = descValue;
-            
-            // Enviar el formulario
-            document.querySelector('form').submit();
-        }
-        
-        function resetSort() {
-            // Resetear solo el ordenamiento
-            document.querySelector('select[name="sort"]').value = "0";
-            document.querySelector('select[name="desc"]').value = "0";
-        }
-        
-        // Auto-submit cuando se cambia el ordenamiento
-        document.addEventListener('DOMContentLoaded', function() {
-            const sortSelect = document.querySelector('select[name="sort"]');
-            const descSelect = document.querySelector('select[name="desc"]');
-            
-            sortSelect.addEventListener('change', function() {
-                document.querySelector('form').submit();
-            });
-            
-            descSelect.addEventListener('change', function() {
-                document.querySelector('form').submit();
-            });
-        });
-    </script>
 </body>
-</html>

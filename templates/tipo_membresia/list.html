@@ -8,21 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <!-- Navigation -->
-    <nav class="bg-blue-600 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <h1 class="text-white text-xl font-bold">Sistema de Membresías</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="{% url 'membresia_list' %}" class="text-white hover:text-blue-200 transition-colors">Membresías</a>
-                    <a href="{% url 'tipo_membresia_list' %}" class="text-white bg-blue-700 px-3 py-1 rounded">Tipos</a>
-                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Duraciones</a>
-                </div>
-            </div>
-        </div>
-    </nav>
 
     <div class="max-w-6xl mx-auto p-6">
         <!-- Header -->
@@ -42,54 +27,64 @@
             </div>
         </div>
 
-        <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total de Tipos</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ tipos|length }}</p>
-                    </div>
+        <!-- Filtros y Estadísticas -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <!-- Búsqueda -->
+            <form method="get" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-900">🔍 Buscar Tipos</h3>
+                    {% if tipos %}
+                        <div class="text-sm text-gray-500">
+                            Mostrando {{ tipos|length }} tipo{{ tipos|length|pluralize }}
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
+                
+                <div class="flex gap-4">
+                    <!-- Búsqueda por descripción -->
+                    <div class="flex-1">
+                        <input type="text" 
+                               name="q" 
+                               placeholder="Buscar por descripción..." 
+                               value="{{ request.GET.q }}" 
+                               class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 text-green-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Tipos Activos</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ tipos|length }}</p>
+                    <!-- Botones de acción -->
+                    <div class="flex space-x-2">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            Buscar
+                        </button>
+                        {% if request.GET.q %}
+                        <a href="{% url 'tipo_membresia_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Limpiar
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                <!-- Información de búsqueda activa -->
+                {% if request.GET.q %}
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div class="flex items-center text-sm">
+                        <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Más Popular</p>
-                        <p class="text-lg font-bold text-gray-900">
-                            {% if tipos %}{{ tipos.0.descripcion }}{% else %}N/A{% endif %}
-                        </p>
+                        <strong>Búsqueda activa:</strong>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs ml-2">"{{ request.GET.q }}"</span>
                     </div>
                 </div>
-            </div>
+                {% endif %}
+            </form>
         </div>
 
-        <!-- Table -->
+        <!-- Tabla -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-medium text-gray-900">Lista de Tipos</h3>
@@ -105,9 +100,6 @@
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Descripción
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Estado
                                 </th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Acciones
@@ -141,14 +133,6 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                            </svg>
-                                            Activo
-                                        </span>
-                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                         <div class="flex justify-center space-x-2">
                                             <a href="{% url 'tipo_membresia_update' tipo.id_tipo_membresia %}" 
@@ -159,7 +143,8 @@
                                                 Editar
                                             </a>
                                             <a href="{% url 'tipo_membresia_delete' tipo.id_tipo_membresia %}" 
-                                               class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition-colors">
+                                               class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition-colors"
+                                               onclick="return confirm('¿Estás seguro de eliminar este tipo de membresía?')">
                                                 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                 </svg>
@@ -172,14 +157,107 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Paginación -->
+                {% if tipos.has_other_pages %}
+                    <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1 flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm text-gray-700">
+                                        Mostrando
+                                        <span class="font-medium">{{ tipos.start_index }}</span>
+                                        a
+                                        <span class="font-medium">{{ tipos.end_index }}</span>
+                                        de
+                                        <span class="font-medium">{{ tipos.paginator.count }}</span>
+                                        resultado{{ tipos.paginator.count|pluralize }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                        {% if tipos.has_previous %}
+                                            <a href="?page={{ tipos.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                                               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors">
+                                                <span class="sr-only">Anterior</span>
+                                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        {% endif %}
+
+                                        {% for num in tipos.paginator.page_range %}
+                                            {% if num == tipos.number %}
+                                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                                                    {{ num }}
+                                                </span>
+                                            {% elif num > tipos.number|add:'-3' and num < tipos.number|add:'3' %}
+                                                <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                                                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    {{ num }}
+                                                </a>
+                                            {% elif num == 1 %}
+                                                <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                                                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    1
+                                                </a>
+                                                {% if tipos.number > 4 %}
+                                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                                        ...
+                                                    </span>
+                                                {% endif %}
+                                            {% elif num == tipos.paginator.num_pages %}
+                                                {% if tipos.number < tipos.paginator.num_pages|add:'-3' %}
+                                                    <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                                        ...
+                                                    </span>
+                                                {% endif %}
+                                                <a href="?page={{ tipos.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                                                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    {{ tipos.paginator.num_pages }}
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if tipos.has_next %}
+                                            <a href="?page={{ tipos.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                                               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors">
+                                                <span class="sr-only">Siguiente</span>
+                                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                                </svg>
+                                            </a>
+                                        {% endif %}
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
             {% else %}
                 <div class="text-center py-12">
                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
-                    <h3 class="mt-2 text-sm font-medium text-gray-900">No hay tipos de membresía</h3>
-                    <p class="mt-1 text-sm text-gray-500">Comienza creando tu primer tipo de membresía.</p>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No se encontraron tipos de membresía</h3>
+                    <p class="mt-1 text-sm text-gray-500">
+                        {% if request.GET.q %}
+                            No hay resultados para tu búsqueda. Intenta con otros términos.
+                        {% else %}
+                            Comienza creando tu primer tipo de membresía.
+                        {% endif %}
+                    </p>
                     <div class="mt-6">
+                        {% if request.GET.q %}
+                            <a href="{% url 'tipo_membresia_list' %}" 
+                               class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 mr-3">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Limpiar Búsqueda
+                            </a>
+                        {% endif %}
                         <a href="{% url 'tipo_membresia_create' %}" 
                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -194,4 +272,3 @@
     </div>
 </body>
 </html>
-

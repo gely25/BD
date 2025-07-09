@@ -1,7 +1,595 @@
-<h1>{% if is_editing %}Editar{% else %}Crear{% endif %} Rutina</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">{% if is_editing %}Actualizar{% else %}Crear{% endif %}</button>
-</form>
-<a href="{% url 'rutina_list' %}">Cancelar</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if is_editing %}Editar Rutina{% else %}Crear Nueva Rutina{% endif %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-white text-xl font-bold">Sistema de Rutinas</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'rutina_list' %}" class="text-white bg-blue-700 px-3 py-1 rounded">Rutinas</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Ejercicios</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Entrenamientos</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <div>
+                        <a href="{% url 'rutina_list' %}" class="text-gray-400 hover:text-gray-500">
+                            <svg class="flex-shrink-0 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            <span class="sr-only">Inicio</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="{% url 'rutina_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Rutinas</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-4 text-sm font-medium text-gray-500">{% if is_editing %}Editar{% else %}Nueva{% endif %}</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Main Form Card -->
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="h-12 w-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            {% if is_editing %}
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            {% else %}
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold text-white">
+                            {% if is_editing %}
+                                Editar Rutina
+                            {% else %}
+                                Crear Nueva Rutina
+                            {% endif %}
+                        </h1>
+                        <p class="text-blue-100 mt-1">
+                            {% if is_editing %}
+                                Modifica los ejercicios y configuraciones de la rutina
+                            {% else %}
+                                Diseña una nueva rutina de entrenamiento para tus clientes
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <div class="px-6 py-8">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Non-field errors -->
+                    {% if form.non_field_errors %}
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <h3 class="text-sm font-medium text-red-800">Se encontraron los siguientes errores:</h3>
+                                    <div class="mt-2 text-sm text-red-700">
+                                        {{ form.non_field_errors }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Form fields organized by type -->
+                    <div class="space-y-8">
+                        <!-- Información General -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Información General
+                            </h3>
+                            
+                            {% for field in form %}
+                                {% if field.name == 'nombre' or field.name == 'descripcion' or field.name == 'objetivo' %}
+                                    <div class="form-field mb-6">
+                                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            {% if field.name == 'nombre' %}
+                                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                                </svg>
+                                            {% elif field.name == 'descripcion' %}
+                                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                                                </svg>
+                                            {% elif field.name == 'objetivo' %}
+                                                <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                                                </svg>
+                                            {% endif %}
+                                            {{ field.label }}
+                                            {% if field.field.required %}
+                                                <span class="text-red-500">*</span>
+                                            {% endif %}
+                                        </label>
+                                        
+                                        <div class="relative rounded-md shadow-sm">
+                                            {{ field }}
+                                        </div>
+                                        
+                                        {% if field.errors %}
+                                            <div class="mt-2">
+                                                {% for error in field.errors %}
+                                                    <p class="text-sm text-red-600 flex items-center">
+                                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                        {{ error }}
+                                                    </p>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if field.help_text %}
+                                            <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <!-- Configuración de Entrenamiento -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Configuración de Entrenamiento
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {% for field in form %}
+                                    {% if field.name == 'duracion' or field.name == 'dificultad' or field.name == 'frecuencia' or field.name == 'categoria' %}
+                                        <div class="form-field">
+                                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                                {% if field.name == 'duracion' %}
+                                                    <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                {% elif field.name == 'dificultad' %}
+                                                    <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                                    </svg>
+                                                {% elif field.name == 'frecuencia' %}
+                                                    <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                {% elif field.name == 'categoria' %}
+                                                    <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                                    </svg>
+                                                {% endif %}
+                                                {{ field.label }}
+                                                {% if field.field.required %}
+                                                    <span class="text-red-500">*</span>
+                                                {% endif %}
+                                            </label>
+                                            
+                                            <div class="relative rounded-md shadow-sm">
+                                                {{ field }}
+                                            </div>
+                                            
+                                            {% if field.errors %}
+                                                <div class="mt-2">
+                                                    {% for error in field.errors %}
+                                                        <p class="text-sm text-red-600 flex items-center">
+                                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                            </svg>
+                                                            {{ error }}
+                                                        </p>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                            
+                                            {% if field.help_text %}
+                                                <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Ejercicios y Detalles -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                </svg>
+                                Ejercicios y Detalles
+                            </h3>
+                            
+                            {% for field in form %}
+                                {% if field.name != 'nombre' and field.name != 'descripcion' and field.name != 'objetivo' and field.name != 'duracion' and field.name != 'dificultad' and field.name != 'frecuencia' and field.name != 'categoria' %}
+                                    <div class="form-field mb-6">
+                                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                            <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                            </svg>
+                                            {{ field.label }}
+                                            {% if field.field.required %}
+                                                <span class="text-red-500">*</span>
+                                            {% endif %}
+                                        </label>
+                                        
+                                        <div class="relative rounded-md shadow-sm">
+                                            {{ field }}
+                                        </div>
+                                        
+                                        {% if field.errors %}
+                                            <div class="mt-2">
+                                                {% for error in field.errors %}
+                                                    <p class="text-sm text-red-600 flex items-center">
+                                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                        {{ error }}
+                                                    </p>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if field.help_text %}
+                                            <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Consejos para crear rutinas efectivas</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Define objetivos claros y específicos para la rutina</li>
+                                        <li>Considera el nivel de experiencia de tus clientes</li>
+                                        <li>Incluye ejercicios de calentamiento y enfriamiento</li>
+                                        <li>Equilibra diferentes grupos musculares y tipos de ejercicio</li>
+                                        <li>Especifica claramente series, repeticiones y descansos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                        <a href="{% url 'rutina_list' %}" 
+                           class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Cancelar
+                        </a>
+                        
+                        <button type="submit" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
+                            {% if is_editing %}
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                                Actualizar Rutina
+                            {% else %}
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Crear Rutina
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Card (if editing) -->
+        {% if is_editing %}
+            <div class="mt-6 bg-white shadow-lg rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    Vista Previa de la Rutina
+                </h3>
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-12 w-12">
+                                <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-lg font-medium text-gray-900" id="preview-nombre">Nombre de la Rutina</div>
+                                <div class="text-sm text-gray-500" id="preview-objetivo">Objetivo: Mejorar condición física</div>
+                                <div class="text-sm text-gray-500" id="preview-duracion">Duración: 45 minutos</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-12 w-12">
+                                <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-lg font-medium text-gray-900" id="preview-dificultad">Dificultad: Intermedio</div>
+                                <div class="text-sm text-gray-500" id="preview-frecuencia">Frecuencia: 3 veces por semana</div>
+                                <div class="text-sm text-gray-500" id="preview-categoria">Categoría: Fuerza</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600" id="preview-descripcion">Descripción de la rutina...</div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript for form enhancements -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del formulario
+            const formInputs = document.querySelectorAll('input, select, textarea');
+            
+            // Estilizar campos del formulario
+            formInputs.forEach(function(input) {
+                if (input.type !== 'hidden') {
+                    input.classList.add('mt-1', 'block', 'w-full', 'border-gray-300', 'rounded-md', 'shadow-sm', 'focus:ring-blue-500', 'focus:border-blue-500', 'sm:text-sm', 'px-3', 'py-2');
+                    
+                    if (input.tagName === 'SELECT') {
+                        input.classList.add('pr-10');
+                    }
+                    
+                    if (input.tagName === 'TEXTAREA') {
+                        input.classList.add('resize-vertical');
+                        input.rows = 4; // Establecer altura mínima para textareas
+                    }
+                }
+            });
+
+            // Auto-focus en el primer campo
+            const firstInput = document.querySelector('input:not([type="hidden"]), select, textarea');
+            if (firstInput) {
+                firstInput.focus();
+            }
+
+            // Vista previa en tiempo real (solo si estamos editando)
+            {% if is_editing %}
+                const nombreInput = document.querySelector('input[name="nombre"]');
+                const objetivoInput = document.querySelector('input[name="objetivo"], select[name="objetivo"], textarea[name="objetivo"]');
+                const duracionInput = document.querySelector('input[name="duracion"], select[name="duracion"]');
+                const dificultadInput = document.querySelector('select[name="dificultad"], input[name="dificultad"]');
+                const frecuenciaInput = document.querySelector('input[name="frecuencia"], select[name="frecuencia"]');
+                const categoriaInput = document.querySelector('select[name="categoria"], input[name="categoria"]');
+                const descripcionInput = document.querySelector('textarea[name="descripcion"], input[name="descripcion"]');
+                
+                const previewNombre = document.getElementById('preview-nombre');
+                const previewObjetivo = document.getElementById('preview-objetivo');
+                const previewDuracion = document.getElementById('preview-duracion');
+                const previewDificultad = document.getElementById('preview-dificultad');
+                const previewFrecuencia = document.getElementById('preview-frecuencia');
+                const previewCategoria = document.getElementById('preview-categoria');
+                const previewDescripcion = document.getElementById('preview-descripcion');
+                
+                function updatePreview() {
+                    if (previewNombre && nombreInput) {
+                        previewNombre.textContent = nombreInput.value || 'Nombre de la Rutina';
+                    }
+                    
+                    if (previewObjetivo && objetivoInput) {
+                        previewObjetivo.textContent = `Objetivo: ${objetivoInput.value || 'Mejorar condición física'}`;
+                    }
+                    
+                    if (previewDuracion && duracionInput) {
+                        let duracionText = duracionInput.value || '45';
+                        if (duracionText && !duracionText.includes('min')) {
+                            duracionText += ' minutos';
+                        }
+                        previewDuracion.textContent = `Duración: ${duracionText}`;
+                    }
+                    
+                    if (previewDificultad && dificultadInput) {
+                        previewDificultad.textContent = `Dificultad: ${dificultadInput.value || 'Intermedio'}`;
+                    }
+                    
+                    if (previewFrecuencia && frecuenciaInput) {
+                        let frecuenciaText = frecuenciaInput.value || '3 veces por semana';
+                        if (frecuenciaText && !frecuenciaText.includes('veces') && !frecuenciaText.includes('día')) {
+                            frecuenciaText += ' veces por semana';
+                        }
+                        previewFrecuencia.textContent = `Frecuencia: ${frecuenciaText}`;
+                    }
+                    
+                    if (previewCategoria && categoriaInput) {
+                        previewCategoria.textContent = `Categoría: ${categoriaInput.value || 'Fuerza'}`;
+                    }
+                    
+                    if (previewDescripcion && descripcionInput) {
+                        const desc = descripcionInput.value || 'Descripción de la rutina...';
+                        previewDescripcion.textContent = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
+                    }
+                }
+                
+                // Event listeners para actualización en tiempo real
+                if (nombreInput) nombreInput.addEventListener('input', updatePreview);
+                if (objetivoInput) objetivoInput.addEventListener('input', updatePreview);
+                if (duracionInput) duracionInput.addEventListener('input', updatePreview);
+                if (dificultadInput) dificultadInput.addEventListener('change', updatePreview);
+                if (frecuenciaInput) frecuenciaInput.addEventListener('input', updatePreview);
+                if (categoriaInput) categoriaInput.addEventListener('change', updatePreview);
+                if (descripcionInput) descripcionInput.addEventListener('input', updatePreview);
+                
+                // Actualizar vista previa inicial
+                updatePreview();
+            {% endif %}
+
+            // Validación del formulario
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                let hasErrors = false;
+                
+                // Validar campos requeridos
+                const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+                requiredFields.forEach(function(field) {
+                    if (!field.value.trim()) {
+                        hasErrors = true;
+                        field.classList.add('border-red-500');
+                        field.classList.remove('border-gray-300');
+                    } else {
+                        field.classList.remove('border-red-500');
+                        field.classList.add('border-gray-300');
+                    }
+                });
+                
+                // Validación específica para campos numéricos
+                const numericFields = document.querySelectorAll('input[type="number"]');
+                numericFields.forEach(function(field) {
+                    if (field.value && (isNaN(field.value) || field.value < 0)) {
+                        hasErrors = true;
+                        field.classList.add('border-red-500');
+                        field.classList.remove('border-gray-300');
+                    }
+                });
+                
+                if (hasErrors) {
+                    e.preventDefault();
+                    alert('Por favor, corrija los errores en el formulario antes de continuar.');
+                    
+                    // Scroll al primer campo con error
+                    const firstError = document.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                    return false;
+                }
+            });
+            
+            // Remover clases de error al escribir
+            formInputs.forEach(function(input) {
+                input.addEventListener('input', function() {
+                    this.classList.remove('border-red-500');
+                    this.classList.add('border-gray-300');
+                });
+                
+                input.addEventListener('change', function() {
+                    this.classList.remove('border-red-500');
+                    this.classList.add('border-gray-300');
+                });
+            });
+
+            // Contador de caracteres para textareas
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(function(textarea) {
+                // Agregar contador si no existe
+                if (!textarea.nextElementSibling || !textarea.nextElementSibling.classList.contains('char-counter')) {
+                    const counter = document.createElement('div');
+                    counter.className = 'char-counter text-sm text-gray-500 mt-1 text-right';
+                    counter.textContent = `${textarea.value.length} caracteres`;
+                    textarea.parentNode.insertBefore(counter, textarea.nextSibling);
+                    
+                    textarea.addEventListener('input', function() {
+                        counter.textContent = `${this.value.length} caracteres`;
+                        
+                        // Cambiar color si se acerca al límite (si existe maxlength)
+                        if (this.maxLength > 0) {
+                            const percentage = (this.value.length / this.maxLength) * 100;
+                            if (percentage > 90) {
+                                counter.className = 'char-counter text-sm text-red-500 mt-1 text-right';
+                            } else if (percentage > 75) {
+                                counter.className = 'char-counter text-sm text-yellow-500 mt-1 text-right';
+                            } else {
+                                counter.className = 'char-counter text-sm text-gray-500 mt-1 text-right';
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Mejorar campos de duración con sugerencias
+            const duracionField = document.querySelector('input[name="duracion"]');
+            if (duracionField && duracionField.type === 'text') {
+                duracionField.placeholder = 'Ej: 45 minutos, 1 hora, 30-45 min';
+                
+                // Formateo automático de duración
+                duracionField.addEventListener('blur', function() {
+                    let value = this.value.trim();
+                    if (value && !isNaN(value) && !value.includes('min') && !value.includes('hora')) {
+                        this.value = value + ' minutos';
+                    }
+                });
+            }
+
+            // Mejorar campos de frecuencia con sugerencias
+            const frecuenciaField = document.querySelector('input[name="frecuencia"]');
+            if (frecuenciaField && frecuenciaField.type === 'text') {
+                frecuenciaField.placeholder = 'Ej: 3 veces por semana, Diario, Lunes/Miércoles/Viernes';
+            }
+        });
+    </script>
+</body>
+</html>

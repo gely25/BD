@@ -3,118 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <title>Listado de Clientes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f8f9fa;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .btn-nuevo {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-        }
-        .btn-nuevo:hover {
-            background-color: #218838;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-        th {
-            background-color: #343a40;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        .acciones a {
-            margin-right: 10px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .acciones .editar {
-            color: #007bff;
-        }
-        .acciones .eliminar {
-            color: #dc3545;
-        }
-        .debug {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 5px;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
 </head>
-<body>
+<body class="bg-gray-200 min-h-screen text-gray-800">
 
-    <h1>Listado de Clientes</h1>
+    <div class="max-w-7xl mx-auto px-6 py-10">
+        <!-- TÍTULO y BOTÓN -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-extrabold flex items-center gap-2 text-gray-800">
+                <svg class="w-7 h-7 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                </svg>
+                Listado de Clientes
+            </h1>
+            <a href="{% url 'cliente_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md flex items-center gap-2">
+                ➕ Nuevo Cliente
+            </a>
+        </div>
 
-    <a class="btn-nuevo" href="{% url 'cliente_create' %}">➕ Nuevo Cliente</a>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>DNI</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th>Fecha Nacimiento</th>
-                <th>Género</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for c in clientes %}
-            <tr>
-                <td>{{ c.id_cliente }}</td>
-                <td>{{ c.nombre }}</td>
-                <td>{{ c.dni }}</td>
-                <td>{{ c.telefono }}</td>
-                <td>{{ c.email }}</td>
-                <td>{{ c.fecha_nacimiento|date:"F j, Y" }}</td>
-                <td>{{ c.genero }}</td>
-                <td class="acciones">
-                    <!-- OPCIÓN 1: Con parámetro nombrado (RECOMENDADO) -->
-                    <a class="editar" href="{% url 'cliente_update' id_cliente=c.id_cliente %}">✏️ Editar</a>
-                    <a class="eliminar" href="{% url 'cliente_delete' id_cliente=c.id_cliente %}">🗑️ Eliminar</a>
-                    
-                    <!-- OPCIÓN 2: Con parámetro posicional (ALTERNATIVA) -->
-                    <!-- <a class="editar" href="{% url 'cliente_update' c.id_cliente %}">✏️ Editar</a> -->
-                    <!-- <a class="eliminar" href="{% url 'cliente_delete' c.id_cliente %}">🗑️ Eliminar</a> -->
-                    
-                    <!-- DEBUG: Mostrar los valores para verificar -->
-                    <div class="debug">
-                        ID: {{ c.id_cliente }} | 
-                        URL Editar: {% url 'cliente_update' id_cliente=c.id_cliente %} | 
-                        URL Eliminar: {% url 'cliente_delete' id_cliente=c.id_cliente %}
-                    </div>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="8" style="text-align:center;">No hay clientes registrados.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                <!-- FILTROS -->
+        <form method="get" class="mb-6 flex flex-wrap gap-4 items-end">
+            <input type="text" name="search" value="{{ search }}" placeholder="Buscar nombre, DNI o email..."
+                class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm w-64">
+
+            <select name="genero" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm">
+                <option value="">Todos los géneros</option>
+                <option value="Femenino" {% if genero == 'Femenino' %}selected{% endif %}>Femenino</option>
+                <option value="Masculino" {% if genero == 'Masculino' %}selected{% endif %}>Masculino</option>
+            </select>
+
+            <select name="order_by" class="px-4 py-2 rounded-lg border border-gray-300 shadow-sm">
+                <option value="">Ordenar por...</option>
+                <option value="nombre" {% if order_by == 'nombre' %}selected{% endif %}>Nombre A-Z</option>
+                <option value="-nombre" {% if order_by == '-nombre' %}selected{% endif %}>Nombre Z-A</option>
+                <option value="fecha_nacimiento" {% if order_by == 'fecha_nacimiento' %}selected{% endif %}>Nacimiento ↑</option>
+                <option value="-fecha_nacimiento" {% if order_by == '-fecha_nacimiento' %}selected{% endif %}>Nacimiento ↓</option>
+            </select>
+
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
+                Filtrar
+            </button>
+
+            <a href="{% url 'cliente_list' %}"
+            class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg shadow">
+                Borrar Filtros
+            </a>
+        </form>
+
+
+        <!-- TABLA -->
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-blue-600 text-white uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-3">ID</th>
+                        <th class="px-4 py-3">Nombre</th>
+                        <th class="px-4 py-3">DNI</th>
+                        <th class="px-4 py-3">Teléfono</th>
+                        <th class="px-4 py-3">Email</th>
+                        <th class="px-4 py-3">Nacimiento</th>
+                        <th class="px-4 py-3">Género</th>
+                        <th class="px-4 py-3 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 bg-white">
+                    {% for c in clientes %}
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-4 py-3">{{ c.id_cliente }}</td>
+                        <td class="px-4 py-3">{{ c.nombre }}</td>
+                        <td class="px-4 py-3">{{ c.dni }}</td>
+                        <td class="px-4 py-3">{{ c.telefono }}</td>
+                        <td class="px-4 py-3">{{ c.email }}</td>
+                        <td class="px-4 py-3">{{ c.fecha_nacimiento|date:"F j, Y" }}</td>
+                        <td class="px-4 py-3">{{ c.genero }}</td>
+                        <td class="px-4 py-3 text-center space-x-2">
+                            <a href="{% url 'cliente_update' id_cliente=c.id_cliente %}" class="text-blue-600 font-medium hover:underline">✏️ Editar</a>
+                            <a href="{% url 'cliente_delete' id_cliente=c.id_cliente %}" class="text-blue-600 font-medium hover:underline">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center px-4 py-6 text-gray-500">No hay clientes registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- BOTÓN VOLVER AL INICIO -->
+        <div class="flex justify-center mt-6">
+            <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all duration-200">
+                <i class="fas fa-home"></i>
+                Volver al Inicio
+            </a>
+        </div>
+
+
+    </div>
 
 </body>
 </html>
