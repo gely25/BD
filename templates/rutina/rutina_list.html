@@ -1,0 +1,60 @@
+<!-- <h1>Lista de Rutinas</h1>
+<a href="{% url 'rutina_create' %}">Crear nueva rutina</a>
+<ul>
+    {% for rutina in rutinas %}
+    <li>{{ rutina.nombre_rutina }} - <a href="{% url 'rutina_update' rutina.id_rutina %}">Editar</a> - <a href="{% url 'rutina_delete' rutina.id_rutina %}">Eliminar</a></li>
+    {% empty %}
+    <li>No hay rutinas disponibles.</li>
+    {% endfor %}
+</ul> -->
+<h1>Lista de Rutinas</h1>
+
+<a href="{% url 'rutina_create' %}">Crear nueva rutina</a>
+<form method="get">
+    <input type="text" name="search" value="{{ search_query }}" placeholder="Buscar rutina...">
+    <select name="order_by">
+        <option value="id_rutina" {% if order_by == 'id_rutina' %}selected{% endif %}>ID</option>
+        <option value="nombre_rutina" {% if order_by == 'nombre_rutina' %}selected{% endif %}>Nombre</option>
+        <option value="nivel" {% if order_by == 'nivel' %}selected{% endif %}>Nivel</option>
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+<form method="get">
+    <input type="hidden" name="order_by" value="{{ order_by }}">
+    <input type="hidden" name="search" value="{{ search_query }}">
+    <button type="submit" name="order_direction" value="asc">Ordenar Ascendente</button>
+    <button type="submit" name="order_direction" value="desc">Ordenar Descendente</button>
+</form>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre del Cliente</th>
+            <th>Nombre de Rutina</th>
+            <th>Nivel</th>
+            <th>Descripción</th>
+            <th>Objetivo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rutina in rutinas %}
+            <tr>
+                <td>{{ rutina.id_rutina }}</td>
+                <td>{{ rutina.nombre_cliente }}</td>
+                <td>{{ rutina.nombre_rutina }}</td>
+                <td>{{ rutina.nivel }}</td>
+                <td>{{ rutina.descripcion }}</td>
+                <td>{{ rutina.objetivo }}</td>
+                <td>
+                    <a href="{% url 'rutina_update' rutina.id_rutina %}">Editar</a> |
+                    <a href="{% url 'rutina_delete' rutina.id_rutina %}">Eliminar</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">No hay rutinas disponibles.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

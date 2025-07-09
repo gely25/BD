@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            width: 50%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .botones {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 0 8px;
+        }
+        .btn-guardar {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-cancelar {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>{{ title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <small style="color:red;">{{ field.errors|striptags }}</small>
+            {% endif %}
+        {% endfor %}
+
+        <div class="botones">
+            <button type="submit" class="btn btn-guardar">💾 Guardar</button>
+            <a href="{% url back_url %}" class="btn btn-cancelar">↩️ Cancelar</a>
+        </div>
+    </form>
+
+</body>
+</html>

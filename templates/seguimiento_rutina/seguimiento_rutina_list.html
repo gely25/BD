@@ -1,0 +1,50 @@
+<h1>Lista de Seguimientos de Rutina</h1>
+
+<a href="{% url 'seguimiento_rutina_create' %}">Crear nuevo seguimiento</a>
+<form method="get">
+    <input type="text" name="search" value="{{ search_query }}" placeholder="Buscar seguimiento Cliente.." minlength="3">
+    <button type="submit">Filtrar</button>
+</form>
+<form method="get">
+    <input type="hidden" name="order_by" value="dia_semana">
+    <input type="hidden" name="search" value="{{ search_query }}">
+    <button type="submit" name="order_direction" value="asc">Ordenar Lunes a Domingo</button>
+</form>
+
+<form method="get">
+    <input type="hidden" name="order_by" value="id_rutina">
+    <input type="hidden" name="search" value="{{ search_query }}">
+    <button type="submit" name="order_direction" value="asc">Ordenar por ID de Rutina</button>
+</form>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre del Cliente</th>
+            <th>Día de la Semana</th>
+            <th>Fecha Programada</th>
+            <th>Estado de Cumplimiento</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for seguimiento in seguimientos %}
+            <tr>
+                <td>{{ seguimiento.id_seguimiento }}</td>
+                <td>{{ seguimiento.nombre_cliente }}</td>
+                <td>{{ seguimiento.dia_semana }}</td>
+                <td>{{ seguimiento.fecha_programada }}</td>
+                <td>{{ seguimiento.estado_cumplimiento }}</td>
+                <td>
+                    <a href="{% url 'seguimiento_rutina_update' seguimiento.id_seguimiento %}">Editar</a> |
+                    <a href="{% url 'seguimiento_rutina_delete' seguimiento.id_seguimiento %}">Eliminar</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">No hay seguimientos disponibles.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,7 @@
+<h1>{% if is_editing %}Editar{% else %}Crear{% endif %} Rutina</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if is_editing %}Actualizar{% else %}Crear{% endif %}</button>
+</form>
+<a href="{% url 'rutina_list' %}">Cancelar</a>

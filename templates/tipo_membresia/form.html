@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if is_editing %}Editar{% else %}Crear{% endif %} Tipo de Membresía</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-white text-xl font-bold">Sistema de Membresías</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'membresia_list' %}" class="text-white hover:text-blue-200 transition-colors">Membresías</a>
+                    <a href="{% url 'tipo_membresia_list' %}" class="text-white bg-blue-700 px-3 py-1 rounded">Tipos</a>
+                    <a href="#" class="text-white hover:text-blue-200 transition-colors">Duraciones</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <div>
+                        <a href="{% url 'tipo_membresia_list' %}" class="text-gray-400 hover:text-gray-500">
+                            <svg class="flex-shrink-0 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                            </svg>
+                            <span class="sr-only">Inicio</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <a href="{% url 'tipo_membresia_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Tipos de Membresía</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="flex-shrink-0 h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="ml-4 text-sm font-medium text-gray-500">{% if is_editing %}Editar{% else %}Crear{% endif %}</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Main Form Card -->
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="h-12 w-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            {% if is_editing %}
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            {% else %}
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold text-white">
+                            {% if is_editing %}
+                                Editar Tipo de Membresía
+                            {% else %}
+                                Crear Nuevo Tipo de Membresía
+                            {% endif %}
+                        </h1>
+                        <p class="text-blue-100 mt-1">
+                            {% if is_editing %}
+                                Modifica la información del tipo de membresía #{{ id_tipo_membresia }}
+                            {% else %}
+                                Complete la información para crear un nuevo tipo de membresía
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <div class="px-6 py-8">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Descripción Field -->
+                    <div>
+                        <label for="{{ form.descripcion.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            <svg class="w-5 h-5 inline mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            Descripción del Tipo *
+                        </label>
+                        
+                        <div class="relative rounded-md shadow-sm">
+                            {{ form.descripcion }}
+                        </div>
+                        
+                        {% if form.descripcion.errors %}
+                            <div class="mt-2">
+                                {% for error in form.descripcion.errors %}
+                                    <p class="text-sm text-red-600 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <p class="mt-2 text-sm text-gray-500">
+                            Ingrese una descripción clara y descriptiva para este tipo de membresía (ej: "Básica", "Premium", "VIP")
+                        </p>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">Información Importante</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Los tipos de membresía se utilizan para categorizar las diferentes opciones disponibles</li>
+                                        <li>Una vez creado, este tipo podrá ser asignado a múltiples membresías</li>
+                                        <li>Asegúrese de usar nombres descriptivos y únicos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                        <a href="{% url 'tipo_membresia_list' %}" 
+                           class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            Cancelar
+                        </a>
+                        
+                        <button type="submit" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors flex items-center">
+                            {% if is_editing %}
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                                Actualizar Tipo
+                            {% else %}
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Crear Tipo
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Preview Card (if editing) -->
+        {% if is_editing %}
+            <div class="mt-6 bg-white shadow-lg rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Vista Previa</h3>
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900" id="preview-descripcion">
+                                {{ form.descripcion.value|default:"Nombre del tipo" }}
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                ID: #{{ id_tipo_membresia }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript for form enhancements -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-focus en el campo de descripción
+            const descripcionField = document.querySelector('input[name="descripcion"]');
+            if (descripcionField) {
+                descripcionField.focus();
+                
+                // Agregar clases de Tailwind al campo
+                descripcionField.className = 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-3 py-2';
+                
+                // Vista previa en tiempo real (solo si estamos editando)
+                {% if is_editing %}
+                    descripcionField.addEventListener('input', function() {
+                        const previewElement = document.getElementById('preview-descripcion');
+                        if (previewElement) {
+                            previewElement.textContent = this.value || 'Nombre del tipo';
+                        }
+                    });
+                {% endif %}
+            }
+            
+            // Validación del formulario
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                const descripcion = descripcionField.value.trim();
+                
+                if (!descripcion) {
+                    e.preventDefault();
+                    alert('Por favor, ingrese una descripción para el tipo de membresía.');
+                    descripcionField.focus();
+                    return false;
+                }
+                
+                if (descripcion.length < 2) {
+                    e.preventDefault();
+                    alert('La descripción debe tener al menos 2 caracteres.');
+                    descripcionField.focus();
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
