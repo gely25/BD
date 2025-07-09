@@ -541,10 +541,6 @@
                 <span class="stat-label">Membresías</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">32</span>
-                <span class="stat-label">Empleados</span>
-            </div>
-            <div class="stat-card">
                 <span class="stat-number">98%</span>
                 <span class="stat-label">Satisfacción</span>
             </div>
@@ -579,98 +575,6 @@
                 </div>
             </div>
             {% endfor %}
-            
-            <!-- Sección de Condiciones Físicas -->
-            <div class="module-card">
-                <div class="module-header">
-                    <div class="module-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <div>
-                        <h3 class="module-title">Condiciones Físicas</h3>
-                    </div>
-                </div>
-                <p class="module-description">Gestiona y registra las condiciones físicas de los clientes para un mejor seguimiento de su progreso y salud.</p>
-                <div class="module-actions">
-                    <a href="{% url 'condicion_list' %}" class="btn btn-primary">
-                        <i class="fas fa-list"></i>
-                        Ver Condiciones
-                    </a>
-                    <a href="{% url 'condicion_create' %}" class="btn btn-outline">
-                        <i class="fas fa-plus"></i>
-                        Nueva Condición
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Sección de Roles -->
-            <div class="module-card">
-                <div class="module-header">
-                    <div class="module-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <div>
-                        <h3 class="module-title">Roles y Permisos</h3>
-                    </div>
-                </div>
-                <p class="module-description">Administra los roles del sistema y configura los permisos de acceso para diferentes tipos de usuarios.</p>
-                <div class="module-actions">
-                    <a href="{% url 'rol_list' %}" class="btn btn-primary">
-                        <i class="fas fa-list"></i>
-                        Ver Roles
-                    </a>
-                    <a href="{% url 'rol_create' %}" class="btn btn-outline">
-                        <i class="fas fa-plus"></i>
-                        Nuevo Rol
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Sección de Empleados -->
-            <div class="module-card">
-                <div class="module-header">
-                    <div class="module-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div>
-                        <h3 class="module-title">Empleados</h3>
-                    </div>
-                </div>
-                <p class="module-description">Gestiona el personal del gimnasio, sus datos, roles y asignaciones para una operación eficiente.</p>
-                <div class="module-actions">
-                    <a href="{% url 'empleado_list' %}" class="btn btn-primary">
-                        <i class="fas fa-list"></i>
-                        Ver Empleados
-                    </a>
-                    <a href="{% url 'empleado_create' %}" class="btn btn-outline">
-                        <i class="fas fa-plus"></i>
-                        Nuevo Empleado
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Sección de Evaluaciones -->
-            <div class="module-card">
-                <div class="module-header">
-                    <div class="module-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div>
-                        <h3 class="module-title">Evaluaciones</h3>
-                    </div>
-                </div>
-                <p class="module-description">Realiza evaluaciones periódicas del progreso de los clientes y mantén un seguimiento detallado de su evolución.</p>
-                <div class="module-actions">
-                    <a href="{% url 'evaluacion_list' %}" class="btn btn-primary">
-                        <i class="fas fa-list"></i>
-                        Ver Evaluaciones
-                    </a>
-                    <a href="{% url 'evaluacion_create' %}" class="btn btn-outline">
-                        <i class="fas fa-plus"></i>
-                        Nueva Evaluación
-                    </a>
-                </div>
-            </div>
         </div>
 
         <div class="quick-actions">
@@ -692,22 +596,6 @@
                     <i class="fas fa-id-badge"></i>
                     Nueva Membresía
                 </a>
-                <a href="{% url 'empleado_create' %}" class="quick-btn">
-                    <i class="fas fa-user-tie"></i>
-                    Nuevo Empleado
-                </a>
-                <a href="{% url 'evaluacion_create' %}" class="quick-btn">
-                    <i class="fas fa-chart-line"></i>
-                    Nueva Evaluación
-                </a>
-                <a href="{% url 'condicion_create' %}" class="quick-btn">
-                    <i class="fas fa-heartbeat"></i>
-                    Nueva Condición
-                </a>
-                <a href="{% url 'rol_create' %}" class="quick-btn">
-                    <i class="fas fa-user-shield"></i>
-                    Nuevo Rol
-                </a>
             </div>
         </div>
 
@@ -717,4 +605,3 @@
     </div>
 </body>
 </html>
-

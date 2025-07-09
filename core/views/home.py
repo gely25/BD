@@ -1,5 +1,37 @@
-# core/views/home.py
 from django.shortcuts import render
+from core.conexion import obtener_conexion  # Asegúrate de importar correctamente tu función de conexión
+
+
+def obtener_estadisticas_gimnasio():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    # Total de clientes
+    cursor.execute("SELECT COUNT(*) FROM SGG_M_Cliente")
+    clientes = cursor.fetchone()[0]
+
+    # Total de inscripciones
+    cursor.execute("SELECT COUNT(*) FROM SGG_T_Inscripcion")
+    inscripciones = cursor.fetchone()[0]
+
+    # Total de rutinas
+    cursor.execute("SELECT COUNT(*) FROM SGG_T_Rutina")
+
+    rutinas = cursor.fetchone()[0]
+
+    # Total de seguimientos
+    cursor.execute("SELECT COUNT(*) FROM SGG_T_SeguimientoRutina")
+    seguimientos = cursor.fetchone()[0]
+
+    conexion.close()
+
+    return {
+        'clientes': clientes,
+        'inscripciones': inscripciones,
+        'rutinas': rutinas,
+        'seguimientos': seguimientos,
+    }
+
 
 def home(request):
     """
@@ -64,4 +96,9 @@ def home(request):
             },
         ]
     }
+
+    # Agregar estadísticas al contexto
+    estadisticas = obtener_estadisticas_gimnasio()
+    context.update(estadisticas)
+
     return render(request, 'home.html', context)
