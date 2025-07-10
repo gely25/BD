@@ -157,26 +157,24 @@ class RutinaForm(forms.Form):
 
 from django import forms
 from core.conexion import obtener_conexion
+
 class SeguimientoRutinaForm(forms.Form):
-    DIA_SEMANA_CHOICES = [
-        ('Lunes', 'Lunes'),
-        ('Martes', 'Martes'),
-        ('Miércoles', 'Miércoles'),
-        ('Jueves', 'Jueves'),
-        ('Viernes', 'Viernes'),
-        ('Sábado', 'Sábado'),
-        ('Domingo', 'Domingo'),
+    ESTADO_CUMPLIMIENTO_CHOICES = [
+        ('PENDIENTE', 'Pendiente'),
+        ('CUMPLIDO', 'Cumplido'),
+        ('FALTO', 'Faltó'),
     ]
 
-    ESTADO_CUMPLIMIENTO_CHOICES = [
-        ('Falto', 'Falto'),
-        ('Cumplió', 'Cumplió'),
-        ('Pendiente', 'Pendiente'),
-    ]
-    id_rutina = forms.IntegerField()
-    dia_semana = forms.ChoiceField(choices=DIA_SEMANA_CHOICES, label='Día de la semana')
-    fecha_programada = forms.DateField()
-    estado_cumplimiento = forms.ChoiceField(choices=ESTADO_CUMPLIMIENTO_CHOICES, label='Estado de cumplimiento')
+    id_rutina = forms.ChoiceField(label="Rutina")
+    fecha_programada = forms.DateField(
+        label="Fecha Programada",
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+    estado_cumplimiento = forms.ChoiceField(
+        label="Estado de Cumplimiento",
+        choices=ESTADO_CUMPLIMIENTO_CHOICES
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         conn = obtener_conexion()
@@ -187,10 +185,7 @@ class SeguimientoRutinaForm(forms.Form):
         self.fields['id_rutina'].choices = [(row[0], row[1]) for row in cursor.fetchall()]
 
         conn.close()
-        
-        
-        
-        
+
         
         
         

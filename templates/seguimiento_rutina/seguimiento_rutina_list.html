@@ -20,16 +20,22 @@
         </a>
     </div>
 
-    <!-- FORMULARIO DE FILTROS -->
-    <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-xl shadow mb-8">
+
+
+        <!-- FORMULARIO DE FILTROS -->
+    <form method="get" class="grid grid-cols-1 md:grid-cols-5 gap-4 bg-white p-4 rounded-xl shadow mb-8">
         <input type="text" name="search" value="{{ search_query }}" placeholder="Buscar por Cliente..." class="border rounded-lg px-4 py-2 shadow w-full" minlength="3">
-        <input type="date" name="fecha_programada" value="{{ fecha_programada }}" class="border rounded-lg px-4 py-2 shadow w-full">
+        
+        <input type="date" name="fecha_inicio" value="{{ fecha_inicio }}" class="border rounded-lg px-4 py-2 shadow w-full" placeholder="Desde...">
+        <input type="date" name="fecha_fin" value="{{ fecha_fin }}" class="border rounded-lg px-4 py-2 shadow w-full" placeholder="Hasta...">
+
         <select name="estado_cumplimiento" class="border rounded-lg px-4 py-2 shadow w-full">
             <option value="">Todos</option>
             <option value="PENDIENTE" {% if estado_cumplimiento == "PENDIENTE" %}selected{% endif %}>Pendiente</option>
             <option value="CUMPLIDO" {% if estado_cumplimiento == "CUMPLIDO" %}selected{% endif %}>Cumplido</option>
             <option value="FALTO" {% if estado_cumplimiento == "FALTO" %}selected{% endif %}>Faltó</option>
         </select>
+
         <div class="flex gap-2">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
                 <i class="fas fa-filter"></i> Filtrar
@@ -38,7 +44,8 @@
                 <i class="fas fa-eraser"></i> Limpiar
             </a>
         </div>
-    </form>
+</form>
+
 
     <!-- TABLA -->
     <div class="bg-white rounded-xl shadow-xl overflow-hidden">
@@ -100,3 +107,7 @@
 
 </body>
 </html>
+
+
+
+
