@@ -12,7 +12,38 @@ def inscripcion_list(request):
     conn = obtener_conexion()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    # Consultar tipos y duraciones para los select del filtro
+    cursor.execute("SELECT id_tipo_membresia, descripcion FROM SGG_P_TipoMembresia")
+    tipos_membresia = cursor.fetchall()
+
+    cursor.execute("SELECT id_duracion, descripcion FROM SGG_P_Duracion")
+    duraciones = cursor.fetchall()
+
+    # Captura de parámetros GET
+    search = request.GET.get("search", "")
+    tipo = request.GET.get("tipo", "")
+    duracion = request.GET.get("duracion", "")
+    precio_min = request.GET.get("precio_min", "")
+    precio_max = request.GET.get("precio_max", "")
+    ordenar_por = request.GET.get("ordenar_por", "I.id_inscripcion")
+    direccion = request.GET.get("direccion", "DESC")
+
+    # Filtros
+    filtros = []
+    if search:
+        filtros.append(f"(C.nombre LIKE '%{search}%' OR TM.descripcion LIKE '%{search}%' OR D.descripcion LIKE '%{search}%')")
+    if tipo:
+        filtros.append(f"TM.id_tipo_membresia = {tipo}")
+    if duracion:
+        filtros.append(f"D.id_duracion = {duracion}")
+    if precio_min:
+        filtros.append(f"I.precio_pagado >= {precio_min}")
+    if precio_max:
+        filtros.append(f"I.precio_pagado <= {precio_max}")
+
+    where_clause = "WHERE " + " AND ".join(filtros) if filtros else ""
+
+    sql = f"""
         SELECT I.id_inscripcion, C.nombre AS cliente, TM.descripcion AS tipo_membresia,
                D.descripcion AS duracion, I.fecha_inicio, I.fecha_fin,
                I.precio_pagado, I.estado
@@ -21,8 +52,11 @@ def inscripcion_list(request):
         JOIN SGG_M_Membresia M ON I.id_membresia = M.id_membresia
         JOIN SGG_P_TipoMembresia TM ON M.id_tipo_membresia = TM.id_tipo_membresia
         JOIN SGG_P_Duracion D ON M.id_duracion = D.id_duracion
-        ORDER BY I.id_inscripcion DESC
-    """)
+        {where_clause}
+        ORDER BY {ordenar_por} {direccion}
+    """
+
+    cursor.execute(sql)
     inscripciones = cursor.fetchall()
     conn.close()
 
@@ -41,9 +75,17 @@ def inscripcion_list(request):
     ]
 
     return render(request, 'inscripcion/inscripcion_list.html', {
-        'inscripciones': inscripciones_data
+        'inscripciones': inscripciones_data,
+        'tipos_membresia': tipos_membresia,
+        'duraciones': duraciones,
+        'search': search,
+        'tipo': tipo,
+        'duracion': duracion,
+        'precio_min': precio_min,
+        'precio_max': precio_max,
+        'ordenar_por': ordenar_por,
+        'direccion': direccion
     })
-
 
 
 
